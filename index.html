@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAPOS LEAGUE</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="css/index.css"> </head>
+<body>
+  <header>SAPOS LEAGUE</header>
+
+  <div class="container">
+    <div class="tabela">
+      <h2>Sapos League 2025</h2>
+      <table id="tabela">
+        <thead>
+          <tr>
+            <th>#</th><th>Time</th><th>PTS</th><th>J</th><th>V</th><th>E</th><th>D</th><th>GP</th><th>GC</th><th>SG</th><th>%</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="jogos">
+      <div class="rodada-header">
+        <button class="seta" onclick="window.anteriorRodada()">←</button>
+        <h3 id="rodada-titulo">Rodada</h3>
+        <button class="seta" onclick="window.proximaRodada()">→</button>
+      </div>
+      <div id="lista-jogos"></div>
+    </div>
+  </div>
+
+  <script type="module" src="js/index.js"></script> </body>
+</html>
