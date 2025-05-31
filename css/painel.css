@@ -1,0 +1,225 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 30px;
+}
+.formulario, .rodadas-lista {
+  max-width: 650px;
+  margin: 20px auto;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+label {
+  display: block;
+  margin: 15px 0 5px;
+  font-weight: 600;
+  color: #555;
+}
+select, input[type="text"], input[type="number"], input[type="date"], input[type="time"] {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1em;
+  box-sizing: border-box;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+button {
+  padding: 12px 25px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.05em;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+button:hover {
+  background-color: #45a049;
+  transform: translateY(-1px);
+}
+button:active {
+  transform: translateY(0);
+}
+
+.popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+  width: 90%;
+  max-width: 800px;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+}
+
+.popup-header h2 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.8em;
+}
+
+/* Estilos para o botão de fechar (o 'X') */
+.close-button {
+    display: flex; /* Para centralizar o 'X' */
+    justify-content: center;
+    align-items: center;
+    width: 28px; /* Largura do quadrado */
+    height: 28px; /* Altura do quadrado */
+    background-color: #dc3545; /* Cor de fundo vermelha */
+    color: white; /* Cor do 'X' branco */
+    font-size: 1.5em; /* Tamanho do 'X' */
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px; /* Levemente arredondado */
+    line-height: 1; /* Ajuda no alinhamento vertical */
+    transition: background-color 0.3s ease; /* Transição suave na cor de fundo */
+    user-select: none; /* Impede a seleção de texto do 'X' */
+    margin-left: 15px; /* Espaçamento do título */
+}
+
+.close-button:hover,
+.close-button:focus {
+    background-color: #c82333; /* Vermelho mais escuro no hover */
+    color: white; /* Mantém o 'X' branco no hover */
+}
+
+
+#mensagem-popup .popup-content {
+  max-width: 400px;
+  text-align: center;
+}
+#mensagem-popup .popup-content p {
+  font-size: 1.1em;
+  margin-bottom: 25px;
+  color: #444;
+}
+#mensagem-ok-button {
+    background-color: #2e7d32;
+}
+#mensagem-ok-button:hover {
+    background-color: #1b5e20;
+}
+
+.rodada {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+.rodada h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #34495e;
+  font-size: 1.5em;
+  border-bottom: 1px dashed #cfd8dc;
+  padding-bottom: 10px;
+}
+.jogo {
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  border-bottom: 1px solid #efefef;
+}
+.jogo:last-child {
+  border-bottom: none;
+}
+.jogo p {
+    margin: 0;
+    flex-grow: 1;
+    font-size: 0.95em;
+    line-height: 1.4;
+}
+.botao-editar-jogo {
+    padding: 8px 12px;
+    background-color: #5bc0de;
+    font-size: 1.1em;
+    line-height: 1;
+    margin-right: 0;
+}
+.botao-editar-jogo:hover {
+    background-color: #31b0d5;
+}
+
+.paginacao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+.paginacao button {
+  padding: 8px 15px;
+  font-size: 1em;
+  background-color: #2e7d32;
+  color: white;
+}
+.paginacao button:hover {
+  background-color: #1b5e20;
+}
+.paginacao input {
+  width: 50px;
+  text-align: center;
+  border-radius: 6px;
+}
+.paginacao span {
+  font-weight: 600;
+  color: #666;
+}
+
+@media (max-width: 600px) {
+  .formulario {
+    padding: 20px;
+  }
+  button {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+  button:last-child {
+    margin-bottom: 0;
+  }
+}
