@@ -33,3 +33,50 @@ body.dark-mode {
   --header-gradient-start: #003300;
   --header-gradient-end: #006600;
 }
+
+/* Estilo do botão de alternância de modo claro/escuro */
+.dark-toggle-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: var(--container-bg);
+  border: 2px solid var(--border-soft);
+  color: var(--mode-toggle-icon);
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 12px var(--shadow-subtle);
+  z-index: 1000;
+}
+
+.dark-toggle-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px var(--shadow-medium);
+}
+
+.dark-toggle-button svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+  .dark-toggle-button {
+    top: 15px;
+    right: 15px;
+    width: 50px;
+    height: 50px;
+    font-size: 1.4em;
+  }
+  
+  .dark-toggle-button svg {
+    width: 28px;
+    height: 28px;
+  }
+}
