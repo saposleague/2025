@@ -1,22 +1,35 @@
+/* Variáveis para modo claro (padrão) */
 :root {
-  --background-light: #f8f9fa;
+  --background-light: #f4f4f4;
   --container-bg: #ffffff;
-  --text-dark: #343a40;
-  --text-medium: #6c757d;
+  --text-dark: #333333;
+  --text-medium: #555555;
   --mode-toggle-icon: #343a40;
+  --table-header-bg: #e0e0e0;
+  --table-row-even: #f9f9f9;
+  --table-border: #eee;
+  --jogo-bg: #ffffff;
+  --border-soft: #dee2e6;
+  --shadow-subtle: rgba(0, 0, 0, 0.1);
+  --shadow-medium: rgba(0, 0, 0, 0.15);
+  --header-gradient-start: #004d00;
+  --header-gradient-end: #00cc00;
 }
 
+/* Variáveis para modo escuro */
 body.dark-mode {
   --background-light: #121212;
   --container-bg: #1e1e1e;
   --text-dark: #f1f1f1;
   --text-medium: #bbbbbb;
   --mode-toggle-icon: #f1f1f1;
-  --card-1-bg: #1a2631;
-  --card-2-bg: #1e2d24;
-  --card-1-accent: #3399ff;
-  --card-2-accent: #4cd964;
+  --table-header-bg: #2a2a2a;
+  --table-row-even: #252525;
+  --table-border: #444;
+  --jogo-bg: #2a2a2a;
   --border-soft: #333;
-  --shadow-subtle: rgba(0, 0, 0, 0.2);
-  --shadow-medium: rgba(0, 0, 0, 0.4);
+  --shadow-subtle: rgba(0, 0, 0, 0.3);
+  --shadow-medium: rgba(0, 0, 0, 0.5);
+  --header-gradient-start: #003300;
+  --header-gradient-end: #006600;
 }
