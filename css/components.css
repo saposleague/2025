@@ -1,0 +1,26 @@
+/* css/components.css */
+
+/* Estilo do botão de alternância de modo claro/escuro */
+.dark-toggle-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: var(--container-bg);
+  border: 2px solid var(--border-soft);
+  color: var(--mode-toggle-icon);
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 12px var(--shadow-subtle);
+}
+
+.dark-toggle-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px var(--shadow-medium);
+}

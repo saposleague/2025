@@ -1,0 +1,22 @@
+:root {
+  --background-light: #f8f9fa;
+  --container-bg: #ffffff;
+  --text-dark: #343a40;
+  --text-medium: #6c757d;
+  --mode-toggle-icon: #343a40;
+}
+
+body.dark-mode {
+  --background-light: #121212;
+  --container-bg: #1e1e1e;
+  --text-dark: #f1f1f1;
+  --text-medium: #bbbbbb;
+  --mode-toggle-icon: #f1f1f1;
+  --card-1-bg: #1a2631;
+  --card-2-bg: #1e2d24;
+  --card-1-accent: #3399ff;
+  --card-2-accent: #4cd964;
+  --border-soft: #333;
+  --shadow-subtle: rgba(0, 0, 0, 0.2);
+  --shadow-medium: rgba(0, 0, 0, 0.4);
+}
