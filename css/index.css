@@ -4,12 +4,14 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  background-color: var(--background-light);
+  color: var(--text-dark);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 header {
   width: 100%;
-  background: linear-gradient(90deg, #004d00, #00cc00);
+  background: linear-gradient(90deg, var(--header-gradient-start), var(--header-gradient-end));
   padding: 20px 0;
   color: white;
   text-align: center;
@@ -26,10 +28,12 @@ header {
 }
 
 .tabela, .jogos {
-  background-color: white;
+  background-color: var(--container-bg);
+  color: var(--text-dark);
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px var(--shadow-subtle);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .tabela {
@@ -51,16 +55,17 @@ th, td {
   padding: 10px; /* Padding para desktop */
   text-align: center;
   font-size: 1em; /* Tamanho da fonte para desktop */
+  color: var(--text-dark);
 }
 
 th {
-  background-color: #e0e0e0;
+  background-color: var(--table-header-bg);
   font-weight: bold;
-  color: #333;
+  color: var(--text-dark);
 }
 
 tr:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: var(--table-row-even);
 }
 
 .posicao {
@@ -98,17 +103,19 @@ tr:nth-child(even) {
 }
 
 .jogo-novo {
-  background: white;
+  background: var(--jogo-bg);
+  color: var(--text-dark);
   border-radius: 12px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 4px var(--shadow-subtle);
   margin-bottom: 15px;
   padding: 10px 15px;
   font-family: Arial, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .jogo-cabecalho {
   font-size: 0.85em;
-  color: #555;
+  color: var(--text-medium);
   margin-bottom: 8px;
   text-align: center;
 }
@@ -127,6 +134,7 @@ tr:nth-child(even) {
   align-items: center;
   gap: 4px;
   font-weight: bold;
+  color: var(--text-dark);
 }
 
 /* Ícones dos times nas rodadas - TAMANHO PARA DESKTOP */
@@ -145,10 +153,12 @@ tr:nth-child(even) {
   gap: 6px;
   font-size: 1.2em;
   font-weight: bold;
+  color: var(--text-dark);
 }
 
 .nome-time {
   font-size: 0.95em; /* Tamanho para desktop */
+  color: var(--text-dark);
 }
 
 .tabela-time {
@@ -184,10 +194,12 @@ tr:nth-child(even) {
   h2 {
     font-size: 1.25em;
     margin-bottom: 12px;
+    color: var(--text-dark);
   }
   h3 {
     font-size: 1.1em;
     white-space: nowrap;
+    color: var(--text-dark);
   }
 
   .rodada-header {
@@ -236,14 +248,17 @@ tr:nth-child(even) {
     font-size: 0.75em;
     text-align: center;
     vertical-align: middle;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--table-border);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: var(--text-dark);
   }
 
   .tabela th {
     font-size: 0.7em;
+    background-color: var(--table-header-bg);
+    color: var(--text-dark);
   }
 
   /* Larguras das colunas */
@@ -281,6 +296,7 @@ tr:nth-child(even) {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: var(--text-dark);
   }
 
   /* --- OTIMIZAÇÃO DOS JOGOS --- */
@@ -292,6 +308,7 @@ tr:nth-child(even) {
   .jogo-cabecalho {
     font-size: 0.7em;
     margin-bottom: 4px;
+    color: var(--text-medium);
   }
 
   .jogo-conteudo.alinhado {
@@ -306,9 +323,11 @@ tr:nth-child(even) {
 
   .time .nome-time {
     font-size: 0.75em;
+    color: var(--text-dark);
   }
 
   .placar {
     font-size: 1em;
+    color: var(--text-dark);
   }
 }
