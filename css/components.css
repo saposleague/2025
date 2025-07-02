@@ -1,4 +1,4 @@
-/* css/components.css */
+/* css/components.css - VERSÃO CORRIGIDA */
 
 /* Estilo do botão de alternância de modo claro/escuro */
 .dark-toggle-button {
@@ -9,8 +9,8 @@
   border: 2px solid var(--border-soft);
   color: var(--mode-toggle-icon);
   border-radius: 50%;
-  width: 45px;
-  height: 45px;
+  width: 60px;
+  height: 60px;
   font-size: 1.2em;
   display: flex;
   align-items: center;
@@ -27,29 +27,30 @@
 }
 
 .dark-toggle-button svg {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   transition: all 0.3s ease;
 }
 
-/* Responsividade para mobile */
+/* Responsividade para mobile - TAMANHO MÁXIMO */
 @media (max-width: 768px) {
   .dark-toggle-button {
     top: 15px;
     right: 15px;
-    width: 50px;
-    height: 50px;
-    font-size: 1.4em;
-    border-width: 1px;
+    width: 43px; 
+    height: 43px; 
+    font-size: 0; /* Definido para 0 para não interferir com o SVG */
+    border-width: 2px;
   }
   
   .dark-toggle-button svg {
-    width: 28px;
-    height: 28px;
+    width: 24px !important; 
+    height: 24px !important; 
+    display: block !important;
   }
   
   .dark-toggle-button:hover {
-    transform: scale(1.02); /* Menos zoom no mobile */
+    transform: scale(1.02);
   }
 }
 
@@ -57,12 +58,14 @@
   .dark-toggle-button {
     top: 12px;
     right: 12px;
-    width: 48px;
-    height: 48px;
+    width: 43px; 
+    height: 43px; 
+    font-size: 0; /* Definido para 0 para não interferir com o SVG */
   }
   
   .dark-toggle-button svg {
-    width: 26px;
-    height: 26px;
+    width: 24px !important; 
+    height: 24px !important; 
+    display: block !important;
   }
 }
