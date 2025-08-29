@@ -1,0 +1,3265 @@
+/* Reset e configurações gerais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --header-gradient-start: #004d00;
+    --header-gradient-end: #00cc00;
+    --primary-color: #2563eb;
+    --primary-dark: #1e40af;
+    --success-color: #38a169;
+    --success-dark: #2f855a;
+    --danger-color: #e53e3e;
+    --danger-dark: #c53030;
+    --warning-color: #f59e0b;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --bg-light: #f8fafc;
+    --border-color: #e2e8f0;
+    --shadow-light: rgba(0, 0, 0, 0.1);
+    --shadow-medium: rgba(0, 0, 0, 0.15);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: var(--background-light);
+    color: var(--text-dark);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Header responsivo */
+.header {
+    width: 100%;
+    background: linear-gradient(90deg, var(--header-gradient-start), var(--header-gradient-end));
+    padding: 1.5rem 0;
+    color: white;
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+    box-sizing: border-box;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.header-content {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Conteúdo principal responsivo */
+.main-content {
+    padding: 2rem 0;
+    min-height: calc(100vh - 100px);
+}
+
+.container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Desktop e Tablet - Ajusta padding do container para alinhar com o grid */
+@media (min-width: 769px) {
+    .container {
+        padding: 0 2rem;
+    }
+}
+
+.page-title {
+    text-align: center;
+    font-size: 2.4rem;
+    color: var(--text-dark);
+    margin-bottom: 3rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.page-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+    border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+}
+
+/* RESET FORÇADO PARA O GRID - LAYOUT EMPILHADO APENAS NO MOBILE */
+.teams-grid,
+#teams-container {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    grid-template-rows: 1fr !important;
+    gap: 1.5rem !important;
+    width: calc(100% - 3rem) !important;
+    max-width: 1600px !important;
+    margin: 0 auto 3rem auto !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    float: none !important;
+    clear: both !important;
+    align-items: stretch !important;
+    grid-auto-rows: 1fr !important;
+    justify-items: stretch !important;
+}
+
+/* Garante espaçamento uniforme em todas as resoluções */
+.teams-grid,
+#teams-container {
+    padding: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Desktop - Mantém layout original (não muda nada) */
+@media (min-width: 1400px) {
+    .teams-grid,
+    #teams-container {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        grid-template-rows: 1fr !important;
+        max-width: 1600px !important;
+        gap: 1.5rem !important;
+        width: calc(100% - 3rem) !important;
+        align-items: stretch !important;
+        grid-auto-rows: 1fr !important;
+    }
+    
+    /* Desktop mantém lista de jogadores sempre visível */
+    .teams-grid .team-card .players-list,
+    #teams-container .team-card .players-list {
+        display: block !important;
+        visibility: visible !important;
+        height: auto !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        padding: 0.75rem !important;
+    }
+    
+    /* Desktop - Ajusta espaçamento uniforme dos cards */
+    .teams-grid .team-card,
+    #teams-container .team-card {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+    }
+    
+    
+    /* Desktop mantém dimensões originais dos jogadores */
+.teams-grid .team-card .player-item,
+#teams-container .team-card .player-item {
+    padding: 0.75rem 1rem !important;
+    margin-bottom: 0.5rem !important;
+    min-height: 45px !important;
+    border-radius: 6px !important;
+}
+
+/* Força alinhamento uniforme dos itens de jogadores */
+.teams-grid .team-card .players-list,
+#teams-container .team-card .players-list {
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+}
+
+/* Garante que o último item tenha margem zero para alinhamento perfeito */
+.teams-grid .team-card .player-item:last-child,
+#teams-container .team-card .player-item:last-child {
+    margin-bottom: 0 !important;
+}
+    
+    /* Força todos os cards a terem a mesma altura */
+    .teams-grid .team-card,
+    #teams-container .team-card {
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-self: stretch !important;
+    }
+    
+    /* Garante que a lista de jogadores ocupe todo o espaço disponível */
+    .teams-grid .team-card .players-list,
+    #teams-container .team-card .players-list {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        min-height: 0 !important;
+    }
+    
+    /* Força altura igual para todos os cards */
+    .teams-grid .team-card:first-child,
+    #teams-container .team-card:first-child {
+        height: 100% !important;
+    }
+    
+    .teams-grid .team-card:nth-child(2),
+    #teams-container .team-card:nth-child(2) {
+        height: 100% !important;
+    }
+    
+    .teams-grid .team-card:nth-child(3),
+    #teams-container .team-card:nth-child(3) {
+        height: 100% !important;
+    }
+    
+    .teams-grid .team-card:nth-child(4),
+    #teams-container .team-card:nth-child(4) {
+        height: 100% !important;
+    }
+    
+    /* REGRA ULTRA-ESPECÍFICA PARA DESKTOP - SOBRESCREVE TODAS AS OUTRAS REGRAS */
+    .teams-grid .team-card .players-list,
+    #teams-container .team-card .players-list,
+    .teams-grid .team-card:not(.selected) .players-list,
+    #teams-container .team-card:not(.selected) .players-list {
+        display: block !important;
+        visibility: visible !important;
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        position: static !important;
+        top: auto !important;
+        left: auto !important;
+        overflow: visible !important;
+        clip: auto !important;
+        transform: none !important;
+        z-index: auto !important;
+        margin: 0 !important;
+        padding: 0.75rem !important;
+        border: none !important;
+        background: transparent !important;
+    }
+    
+    /* Desktop - Garante espaçamento uniforme dos cards */
+    .teams-grid .team-card,
+    #teams-container .team-card {
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+    }
+}
+
+/* Tablet - Grid 2 colunas com espaçamentos otimizados */
+@media (max-width: 1399px) and (min-width: 769px) {
+    .teams-grid,
+    #teams-container {
+        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-rows: repeat(2, 1fr) !important;
+        max-width: 1100px !important;
+        gap: 1.5rem !important;
+        width: calc(100% - 3rem) !important;
+        margin: 0 auto 3rem auto !important;
+        align-items: stretch !important;
+        grid-auto-rows: 1fr !important;
+        justify-items: stretch !important;
+    }
+    
+    /* Tablet mantém lista de jogadores sempre visível */
+    .teams-grid .team-card .players-list,
+    #teams-container .team-card .players-list {
+        display: block !important;
+        visibility: visible !important;
+        height: auto !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+    
+    /* Tablet - Ajusta espaçamento uniforme dos cards */
+    .teams-grid .team-card,
+    #teams-container .team-card {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+    }
+    
+    /* Força todos os cards a terem a mesma altura no tablet */
+    .teams-grid .team-card,
+    #teams-container .team-card {
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-self: stretch !important;
+        border-radius: 16px !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12) !important;
+    }
+    
+    /* Garante que a lista de jogadores ocupe todo o espaço disponível */
+    .teams-grid .team-card .players-list,
+    #teams-container .team-card .players-list {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        min-height: 0 !important;
+        justify-content: flex-start !important;
+        align-items: stretch !important;
+        padding: 1.25rem 1.25rem 1.25rem 1.25rem !important;
+    }
+    
+    /* Força altura igual para todos os cards no tablet */
+    .teams-grid .team-card:first-child,
+    #teams-container .team-card:first-child {
+        height: 100% !important;
+    }
+    
+    .teams-grid .team-card:nth-child(2),
+    #teams-container .team-card:nth-child(2) {
+        height: 100% !important;
+    }
+    
+    .teams-grid .team-card:nth-child(3),
+    #teams-container .team-card:nth-child(3) {
+        height: 100% !important;
+    }
+    
+    .teams-grid .team-card:nth-child(4),
+    #teams-container .team-card:nth-child(4) {
+        height: 100% !important;
+    }
+    
+    /* Garante que o último item tenha margem zero para alinhamento perfeito */
+    .teams-grid .team-card .player-item:last-child,
+    #teams-container .team-card .player-item:last-child {
+        margin-bottom: 0 !important;
+    }
+    
+    /* REGRA ULTRA-ESPECÍFICA PARA TABLET - SOBRESCREVE TODAS AS OUTRAS REGRAS */
+    .teams-grid .team-card .players-list,
+    #teams-container .team-card .players-list,
+    .teams-grid .team-card:not(.selected) .players-list,
+    #teams-container .team-card:not(.selected) .players-list {
+        display: block !important;
+        visibility: visible !important;
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        position: static !important;
+        top: auto !important;
+        left: auto !important;
+        overflow: visible !important;
+        clip: auto !important;
+        transform: none !important;
+        z-index: auto !important;
+        margin: 0 !important;
+        padding: 1.25rem !important;
+        border: none !important;
+        background: transparent !important;
+    }
+    
+    /* Tablet - Garante espaçamento uniforme dos cards */
+    .teams-grid .team-card,
+    #teams-container .team-card {
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* Otimizações para tablet */
+    .header {
+        padding: 1.5rem 0;
+    }
+    
+    .header h1 {
+        font-size: 1.875rem;
+        letter-spacing: 1.75px;
+    }
+    
+    .page-title {
+        font-size: 2.25rem;
+        margin-bottom: 3rem;
+    }
+    
+    .main-content {
+        padding: 2rem 0;
+    }
+    
+    .container {
+        padding: 0 1.5rem;
+    }
+    
+    /* Melhorias específicas para tablet */
+    .team-header {
+        padding: 1.75rem !important;
+        border-radius: 16px 16px 0 0 !important;
+    }
+    
+    .team-logo {
+        width: 48px !important;
+        height: 48px !important;
+        font-size: 1.1rem !important;
+    }
+    
+    .team-header h3 {
+        font-size: 1.6rem !important;
+        letter-spacing: 1px !important;
+    }
+    
+    .player-item {
+        padding: 1rem 1.25rem !important;
+        margin-bottom: 0.75rem !important;
+        min-height: 52px !important;
+        border-radius: 8px !important;
+    }
+    
+    .player-name {
+        font-size: 1rem !important;
+    }
+}
+
+/* MOBILE - Layout empilhado com expansão e espaçamentos otimizados */
+@media (max-width: 768px) {
+    .teams-grid,
+    #teams-container {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1.25rem !important;
+        max-width: 100% !important;
+        margin: 0 auto 2.5rem auto !important;
+        align-items: center !important;
+        width: calc(100% - 2.5rem) !important;
+    }
+    
+    /* Mobile - Lista de jogadores oculta por padrão */
+    .teams-grid .team-card .players-list,
+    #teams-container .team-card .players-list {
+        display: none !important;
+        padding: 0.5rem !important;
+        background: var(--background-light) !important;
+        border-top: 1px solid var(--border-soft) !important;
+        max-height: none !important;
+        overflow-y: visible !important;
+        margin: 0 !important;
+        height: 0 !important;
+    }
+    
+    /* Mobile - Lista visível quando selecionado */
+    .teams-grid .team-card.selected .players-list,
+    #teams-container .team-card.selected .players-list {
+        display: block !important;
+        margin-bottom: 1rem !important;
+        padding: 0.5rem !important;
+    }
+    
+    /* Otimizações para mobile */
+    .header {
+        padding: 1.25rem 0;
+    }
+    
+    .header h1 {
+        font-size: 1.625rem;
+        letter-spacing: 1.25px;
+    }
+    
+    .page-title {
+        font-size: 1.75rem;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1rem;
+    }
+    
+    .page-title::after {
+        width: 70px;
+        height: 3px;
+    }
+    
+    .main-content {
+        padding: 1.75rem 0;
+    }
+    
+    .container {
+        padding: 0 1.25rem;
+    }
+    
+    /* Melhorias específicas para mobile */
+    .team-card {
+        border-radius: 14px !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .team-card.selected {
+        margin-bottom: 1.5rem !important;
+        box-shadow: 0 4px 12px var(--shadow-subtle) !important;
+    }
+    
+    /* Força o header selecionado a manter a mesma aparência */
+    .team-card.selected .team-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+        box-shadow: 0 4px 12px var(--shadow-subtle) !important;
+        border: none !important;
+        transform: none !important;
+        filter: none !important;
+        opacity: 1 !important;
+    }
+    
+    /* Regra ultra-específica para mobile */
+    .teams-grid .team-card.selected .team-header,
+    #teams-container .team-card.selected .team-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+        box-shadow: 0 4px 12px var(--shadow-subtle) !important;
+        border: none !important;
+        transform: none !important;
+        filter: none !important;
+        opacity: 1 !important;
+    }
+    
+    /* Força altura igual em mobile */
+    .teams-grid .team-card,
+    #teams-container .team-card,
+    .teams-grid .team-card.selected,
+    #teams-container .team-card.selected {
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
+    }
+    
+    .teams-grid .team-card .team-header,
+    #teams-container .team-card .team-header,
+    .teams-grid .team-card.selected .team-header,
+    #teams-container .team-card.selected .team-header {
+        height: 100px !important;
+        min-height: 100px !important;
+        max-height: 100px !important;
+        padding: 20px !important;
+    }
+    
+    /* Garante que cards não selecionados não tenham espaços residuais */
+    .team-card:not(.selected) {
+        margin-bottom: 0 !important;
+    }
+    
+    /* Garante que a lista não selecionada não ocupe espaço */
+    .team-card:not(.selected) .players-list {
+        margin: 0 !important;
+        padding: 0 !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        overflow: hidden !important;
+        border: none !important;
+        background: transparent !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+    }
+    
+    .team-header {
+        padding: 1.25rem !important;
+        border-radius: 14px 14px 0 0 !important;
+        min-height: 100px !important;
+    }
+    
+    .team-logo {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .team-header h3 {
+        font-size: 1.1rem !important;
+        line-height: 1.4 !important;
+        letter-spacing: 0.75px !important;
+    }
+    
+    .player-item {
+        padding: 0.625rem 0.875rem !important;
+        margin-bottom: 0.375rem !important;
+        min-height: 40px !important;
+        border-radius: 7px !important;
+    }
+    
+    .player-name {
+        font-size: 0.95rem !important;
+    }
+}
+
+/* Mobile pequeno - Espaçamentos ainda mais compactos */
+@media (max-width: 480px) {
+    .teams-grid,
+    #teams-container {
+        max-width: 100% !important;
+        margin: 0 auto 2rem auto !important;
+        gap: 1.25rem !important;
+        align-items: center !important;
+        width: calc(100% - 2rem) !important;
+    }
+    
+    .header {
+        padding: 1rem 0;
+    }
+    
+    .header h1 {
+        font-size: 1.375rem;
+        letter-spacing: 0.75px;
+    }
+    
+    .page-title {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        padding-bottom: 0.75rem;
+    }
+    
+    .page-title::after {
+        width: 60px;
+        height: 2px;
+    }
+    
+    .main-content {
+        padding: 1.5rem 0;
+    }
+    
+    .container {
+        padding: 0 1rem;
+    }
+    
+    /* Melhorias específicas para mobile pequeno */
+    .team-card {
+        border-radius: 12px !important;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08) !important;
+    }
+    
+    .team-card.selected {
+        margin-bottom: 1.25rem !important;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08) !important;
+    }
+    
+    /* Força o header selecionado a manter a mesma aparência */
+    .team-card.selected .team-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08) !important;
+        border: none !important;
+        transform: none !important;
+        filter: none !important;
+        opacity: 1 !important;
+    }
+    
+    /* Regra ultra-específica para mobile pequeno */
+    .teams-grid .team-card.selected .team-header,
+    #teams-container .team-card.selected .team-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08) !important;
+        border: none !important;
+        transform: none !important;
+        filter: none !important;
+        opacity: 1 !important;
+    }
+    
+    /* Força altura igual em mobile pequeno */
+    .teams-grid .team-card,
+    #teams-container .team-card,
+    .teams-grid .team-card.selected,
+    #teams-container .team-card.selected {
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
+    }
+    
+    .teams-grid .team-card .team-header,
+    #teams-container .team-card .team-header,
+    .teams-grid .team-card.selected .team-header,
+    #teams-container .team-card.selected .team-header {
+        height: 90px !important;
+        min-height: 90px !important;
+        max-height: 90px !important;
+        padding: 16px !important;
+    }
+    
+    /* Garante que cards não selecionados não tenham espaços residuais */
+    .team-card:not(.selected) {
+        margin-bottom: 0 !important;
+    }
+    
+    /* Garante que a lista não selecionada não ocupe espaço */
+    .team-card:not(.selected) .players-list {
+        margin: 0 !important;
+        padding: 0 !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        overflow: hidden !important;
+        border: none !important;
+        background: transparent !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+    }
+    
+    .team-header {
+        padding: 1rem !important;
+        border-radius: 12px 12px 0 0 !important;
+        min-height: 90px !important;
+    }
+    
+    .team-logo {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .team-header h3 {
+        font-size: 1rem !important;
+        line-height: 1.3 !important;
+        letter-spacing: 0.5px !important;
+    }
+    
+    .player-item {
+        padding: 0.5rem 0.75rem !important;
+        margin-bottom: 0.25rem !important;
+        min-height: 36px !important;
+        border-radius: 6px !important;
+    }
+    
+    .player-name {
+        font-size: 0.9rem !important;
+    }
+    
+    /* Mobile pequeno - Lista de jogadores com espaçamento otimizado */
+    .teams-grid .team-card .players-list,
+    #teams-container .team-card .players-list {
+        padding: 0.375rem !important;
+    }
+}
+
+/* Cards individuais - comportamento diferente por dispositivo */
+.teams-grid .team-card,
+#teams-container .team-card {
+    background: var(--container-bg) !important;
+    border: 2px solid var(--border-soft) !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    float: none !important;
+    clear: both !important;
+    margin: 0 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 12px var(--shadow-subtle) !important;
+    overflow: hidden !important;
+    align-self: stretch !important;
+}
+
+/* Header do time - comportamento diferente por dispositivo */
+.teams-grid .team-card .team-header,
+#teams-container .team-card .team-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+    color: white !important;
+    padding: 1.25rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    transition: background 0.3s ease !important;
+    border: none !important;
+    margin: 0 !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+/* Efeito de brilho no header */
+.teams-grid .team-card .team-header::before,
+#teams-container .team-card .team-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.teams-grid .team-card:hover .team-header::before,
+#teams-container .team-card:hover .team-header::before {
+    left: 100%;
+}
+
+/* Desktop e Tablet - Header normal (sem cursor pointer) */
+@media (min-width: 769px) {
+    .teams-grid .team-card .team-header,
+    #teams-container .team-card .team-header {
+        cursor: default !important;
+        padding: 1.5rem !important;
+    }
+    
+    .teams-grid .team-card .team-header:hover,
+    #teams-container .team-card .team-header:hover {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+    }
+}
+
+/* Mobile - Header com cursor pointer e hover */
+@media (max-width: 768px) {
+    .teams-grid .team-card .team-header,
+    #teams-container .team-card .team-header {
+        cursor: pointer !important;
+        padding: 1rem !important;
+        min-height: 80px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 0.75rem !important;
+    }
+    
+    .teams-grid .team-card .team-header:hover,
+    #teams-container .team-card .team-header:hover {
+        background: linear-gradient(135deg, var(--primary-dark), var(--primary-color)) !important;
+    }
+    
+    /* Time selecionado - mantém cor original mas adiciona destaque sutil */
+    .teams-grid .team-card.selected .team-header,
+    #teams-container .team-card.selected .team-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+        border-bottom: none !important;
+        box-shadow: 0 4px 12px var(--shadow-subtle) !important;
+        transform: none !important;
+        filter: none !important;
+        opacity: 1 !important;
+    }
+}
+
+/* Mobile pequeno - Header ainda mais compacto */
+@media (max-width: 480px) {
+    .teams-grid .team-card .team-header,
+    #teams-container .team-card .team-header {
+        padding: 0.875rem !important;
+        min-height: 70px !important;
+        gap: 0.5rem !important;
+    }
+}
+
+/* Desktop e Tablet - Lista sempre visível */
+@media (min-width: 769px) {
+    .teams-grid .team-card .players-list,
+    #teams-container .team-card .players-list {
+        display: block !important;
+        padding: 0.75rem !important;
+        background: transparent !important;
+        border: none !important;
+    }
+}
+
+/* Mobile - Lista oculta por padrão, visível quando selecionado */
+@media (max-width: 768px) {
+    .teams-grid .team-card .players-list,
+    #teams-container .team-card .players-list {
+        display: none !important;
+        padding: 1.25rem !important;
+        background: var(--background-light) !important;
+        border-top: 1px solid var(--border-soft) !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        opacity: 0 !important;
+        overflow: hidden !important;
+    }
+    
+    /* FORÇA A EXIBIÇÃO QUANDO SELECIONADO */
+    .teams-grid .team-card.selected .players-list,
+    #teams-container .team-card.selected .players-list {
+        display: block !important;
+        visibility: visible !important;
+        height: auto !important;
+        opacity: 1 !important;
+        overflow: visible !important;
+        animation: slideDown 0.4s ease !important;
+    }
+    
+    /* Adiciona animação de slide down melhorada */
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            max-height: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            max-height: 500px;
+            transform: translateY(0);
+        }
+    }
+}
+
+/* OCULTA LISTA DE JOGADORES APENAS EM MOBILE (não afeta desktop e tablet) */
+@media (max-width: 768px) {
+    .teams-grid .team-card .players-list,
+    #teams-container .team-card .players-list {
+        display: none !important;
+        padding: 0.5rem !important;
+        background: var(--background-light) !important;
+        border-top: 1px solid var(--border-soft) !important;
+        max-height: none !important;
+        overflow-y: visible !important;
+        margin: 0 !important;
+        height: 0 !important;
+    }
+    
+    /* Mobile - Lista visível quando selecionado */
+    .teams-grid .team-card.selected .players-list,
+    #teams-container .team-card.selected .players-list {
+        display: block !important;
+        margin-bottom: 1rem !important;
+        padding: 0.5rem !important;
+    }
+    
+    /* LEGENDA SEMPRE VISÍVEL - IMPORTANTE PARA USUÁRIOS ENTENDEREM AS CORES */
+    .legend-section {
+        display: block !important;
+        visibility: visible !important;
+        height: auto !important;
+        overflow: visible !important;
+        margin-bottom: 1rem !important;
+        padding: 1rem !important;
+        border-radius: 8px !important;
+    }
+}
+
+/* Força cards a colapsarem à altura do cabeçalho em telas < desktop */
+@media (max-width: 1399px) {
+	.teams-grid .team-card,
+	#teams-container .team-card {
+		min-height: 0 !important;
+		height: auto !important;
+		padding: 0 !important;
+		background: transparent !important;
+		display: block !important;
+		overflow: hidden !important;
+		margin: 0 !important;
+		border: none !important;
+		box-shadow: none !important;
+	}
+
+	/* Garante que nada além do cabeçalho ocupe espaço */
+	.teams-grid .team-card > :not(.team-header),
+	#teams-container .team-card > :not(.team-header) {
+		display: none !important;
+		height: 0 !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		border: 0 !important;
+		overflow: hidden !important;
+	}
+
+	/* Força o cabeçalho a ocupar apenas o espaço necessário */
+	.teams-grid .team-card .team-header,
+	#teams-container .team-card .team-header {
+		margin: 0 !important;
+		padding: 1rem !important;
+		height: auto !important;
+		min-height: 0 !important;
+		display: flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+		flex-direction: column !important;
+		text-align: center !important;
+		gap: 0.75rem !important;
+		border-radius: 12px !important;
+		box-shadow: 0 4px 12px var(--shadow-subtle) !important;
+	}
+}
+
+/* Hover effect melhorado */
+.teams-grid .team-card:hover,
+#teams-container .team-card:hover {
+    background: linear-gradient(135deg, var(--background-light), var(--table-row-even)) !important;
+    transform: translateY(-4px) scale(1.02) !important;
+    z-index: 10 !important;
+    box-shadow: 0 12px 32px rgba(37, 99, 235, 0.25) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Remove lista de jogadores dos cards em mobile */
+@media (max-width: 1399px) {
+    .teams-grid .team-card .players-list,
+    #teams-container .team-card .players-list {
+        display: none !important;
+    }
+}
+
+/* Mobile - Grid 2x2 compacto com espaçamentos otimizados */
+@media (max-width: 768px) {
+    .teams-grid,
+    #teams-container {
+        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-rows: repeat(2, 1fr) !important;
+        max-width: 100% !important;
+        margin: 0 1rem 2rem 1rem !important;
+        border-radius: 12px !important;
+        border-width: 2px !important;
+        gap: 0.75rem !important;
+    }
+    
+    .teams-grid .team-card,
+    #teams-container .team-card {
+        min-height: 120px !important;
+    }
+    
+    .teams-grid .team-card .team-header,
+    #teams-container .team-card .team-header {
+        padding: 1rem !important;
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 0.75rem !important;
+        min-height: 90px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    .teams-grid .team-card .team-logo,
+    #teams-container .team-card .team-logo {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .teams-grid .team-card .team-header h3,
+    #teams-container .team-card .team-header h3 {
+        font-size: 1rem !important;
+        line-height: 1.3 !important;
+        margin: 0 !important;
+        text-align: center !important;
+        font-weight: 600 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .teams-grid,
+    #teams-container {
+        gap: 0.5rem !important;
+        margin: 0 0.5rem 1.5rem 0.5rem !important;
+    }
+    
+    .teams-grid .team-card,
+    #teams-container .team-card {
+        min-height: 100px !important;
+    }
+    
+    .teams-grid .team-card .team-header,
+    #teams-container .team-card .team-header {
+        padding: 0.75rem !important;
+        min-height: 80px !important;
+        gap: 0.5rem !important;
+    }
+    
+    .teams-grid .team-card .team-logo,
+    #teams-container .team-card .team-logo {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 0.7rem !important;
+    }
+    
+    .teams-grid .team-card .team-header h3,
+    #teams-container .team-card .team-header h3 {
+        font-size: 0.9rem !important;
+        line-height: 1.2 !important;
+    }
+}
+
+/* Cards de times responsivos */
+.team-card {
+    background: var(--container-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px var(--shadow-subtle);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    min-height: 0;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.team-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--shadow-medium);
+}
+
+.team-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 2px solid var(--warning-color);
+}
+
+.team-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(245, 158, 11, 0.03));
+    pointer-events: none;
+}
+
+.team-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--warning-color), var(--warning-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);
+    border: 2px solid var(--warning-color);
+}
+
+.team-header h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+    line-height: 1.2;
+}
+
+.players-list {
+    padding: 0.75rem 0.75rem 0.5rem 0.75rem !important;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.player-item {
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    min-height: 45px;
+}
+
+.player-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 2px 8px var(--shadow-subtle);
+}
+
+.player-item.apto {
+    background-color: var(--jogo-bg);
+    border-color: var(--success-color);
+    color: var(--success-dark);
+}
+
+.player-item.apto:hover {
+    background-color: var(--table-row-even);
+    border-color: var(--success-dark);
+}
+
+.player-item.nao-apto {
+    background-color: var(--jogo-bg);
+    border-color: var(--danger-color);
+    color: var(--danger-dark);
+}
+
+.player-item.nao-apto:hover {
+    background-color: var(--table-row-even);
+    border-color: var(--danger-dark);
+}
+
+.player-name {
+    font-weight: 500;
+    font-size: 0.95rem;
+    flex: 1;
+    margin-right: 1rem;
+}
+
+/* Seção de legendas responsiva */
+.legend-section {
+    background: var(--container-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px var(--shadow-subtle);
+    margin-bottom: 2rem;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Desktop e Tablet - Alinha legenda com o grid dos times */
+@media (min-width: 769px) {
+    .legend-section {
+        max-width: 1600px;
+        margin-left: auto;
+        margin-right: auto;
+        width: calc(100% - 3rem);
+        padding: 2rem;
+        box-sizing: border-box;
+    }
+}
+
+/* Garante alinhamento perfeito dos últimos itens de jogadores */
+.player-item:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Regra global para evitar espaços residuais quando lista não está selecionada (APENAS EM MOBILE) */
+@media (max-width: 768px) {
+    .team-card:not(.selected) .players-list {
+        margin: 0 !important;
+        padding: 0 !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        overflow: hidden !important;
+        border: none !important;
+        background: transparent !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+    }
+}
+
+/* Garante que o card não tenha altura residual quando lista não está selecionada (APENAS EM MOBILE) */
+@media (max-width: 768px) {
+    .team-card:not(.selected) {
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
+    }
+
+    /* Força o card a ter apenas a altura do header quando não selecionado */
+    .team-card:not(.selected) {
+        height: fit-content !important;
+        min-height: fit-content !important;
+        max-height: fit-content !important;
+        overflow: hidden !important;
+    }
+}
+
+/* Regra para forçar aparência não selecionada quando lista não está visível */
+.team-card .players-list[style*="display: none"] ~ .team-header,
+.team-card .players-list[style*="visibility: hidden"] ~ .team-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+    box-shadow: 0 4px 12px var(--shadow-subtle) !important;
+}
+
+/* Regra para forçar aparência não selecionada quando lista não está visível */
+.team-card .players-list[style*="display: none"] ~ *,
+.team-card .players-list[style*="visibility: hidden"] ~ * {
+        display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    opacity: 0 !important;
+        visibility: hidden !important;
+    overflow: hidden !important;
+}
+
+/* Garante que cards não selecionados não tenham margens residuais (APENAS EM MOBILE) */
+@media (max-width: 768px) {
+    .team-card:not(.selected) {
+        margin-bottom: 0 !important;
+    }
+
+    /* Regra de emergência para forçar reset completo da lista não selecionada */
+    .team-card:not(.selected) .players-list,
+    .team-card:not(.selected) .players-list * {
+        all: unset !important;
+        display: none !important;
+        height: 0 !important;
+        width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        background: transparent !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+    }
+
+    /* Regra específica para forçar altura zero quando não selecionado */
+    .team-card:not(.selected) .players-list {
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        line-height: 0 !important;
+        font-size: 0 !important;
+        transform: scale(0) !important;
+        pointer-events: none !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+    }
+}
+
+/* Regra global para espaçamento da lista de jogadores */
+.teams-grid .team-card .players-list,
+#teams-container .team-card .players-list {
+    padding: 0.75rem 0.75rem 0.75rem 0.75rem !important;
+}
+
+/* Regra específica para forçar reset completo quando não selecionado (APENAS EM MOBILE) */
+@media (max-width: 768px) {
+    .team-card:not(.selected) .players-list {
+        display: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        width: 0 !important;
+        min-width: 0 !important;
+        max-width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        background: transparent !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        transform: scale(0) !important;
+        pointer-events: none !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        z-index: -9999 !important;
+    }
+}
+
+/* Regra global para forçar header selecionado a manter aparência normal */
+    .team-card.selected .team-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+        box-shadow: 0 4px 12px var(--shadow-subtle) !important;
+        border: none !important;
+        transform: none !important;
+    }
+
+    /* Regra ultra-específica para sobrescrever qualquer intensificação */
+    .teams-grid .team-card.selected .team-header,
+    #teams-container .team-card.selected .team-header,
+    .team-card.selected .team-header,
+    .team-card.selected .team-header * {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+        box-shadow: 0 4px 12px var(--shadow-subtle) !important;
+        border: none !important;
+        transform: none !important;
+        filter: none !important;
+        opacity: 1 !important;
+    }
+
+/* Regra para forçar reset completo do card quando não selecionado (APENAS EM MOBILE) */
+@media (max-width: 768px) {
+    .team-card:not(.selected) {
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
+        background: var(--container-bg) !important;
+        border: 2px solid var(--border-soft) !important;
+        box-shadow: 0 4px 12px var(--shadow-subtle) !important;
+    }
+
+    /* Regra para forçar reset do header quando não selecionado */
+    .team-card:not(.selected) .team-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+        box-shadow: 0 4px 12px var(--shadow-subtle) !important;
+    }
+}
+
+/* Regra para forçar remoção da classe selected quando lista não está visível (APENAS EM MOBILE) */
+@media (max-width: 768px) {
+    .team-card .players-list[style*="display: none"],
+    .team-card .players-list[style*="visibility: hidden"] {
+        display: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        width: 0 !important;
+        min-width: 0 !important;
+        max-width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        background: transparent !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        transform: scale(0) !important;
+        pointer-events: none !important;
+        z-index: -9999 !important;
+    }
+}
+
+/* Regra para forçar reset do card quando lista tem display: none (APENAS EM MOBILE) */
+@media (max-width: 768px) {
+    .team-card .players-list[style*="display: none"] ~ .team-header,
+    .team-card .players-list[style*="visibility: hidden"] ~ .team-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+        box-shadow: 0 4px 12px var(--shadow-subtle) !important;
+    }
+
+    /* Regra para forçar reset do card quando lista tem display: none */
+    .team-card .players-list[style*="display: none"] ~ *,
+    .team-card .players-list[style*="visibility: hidden"] ~ * {
+        display: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        background: transparent !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        overflow: hidden !important;
+    }
+}
+
+/* Regra específica para mobile */
+@media (max-width: 768px) {
+    .teams-grid .team-card .players-list,
+    #teams-container .team-card .players-list {
+        padding: 0.5rem !important;
+    }
+    
+    /* Força reset completo em mobile quando não selecionado */
+    .teams-grid .team-card:not(.selected) .players-list,
+    #teams-container .team-card:not(.selected) .players-list {
+        display: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        width: 0 !important;
+        min-width: 0 !important;
+        max-width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        background: transparent !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        transform: scale(0) !important;
+        pointer-events: none !important;
+        z-index: -9999 !important;
+    }
+    
+    /* Força reset completo do card em mobile quando não selecionado */
+    .teams-grid .team-card:not(.selected),
+    #teams-container .team-card:not(.selected) {
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
+        background: var(--container-bg) !important;
+        border: 2px solid var(--border-soft) !important;
+        box-shadow: 0 4px 12px var(--shadow-subtle) !important;
+    }
+    
+    /* Força reset do header em mobile quando não selecionado */
+    .teams-grid .team-card:not(.selected) .team-header,
+    #teams-container .team-card:not(.selected) .team-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+        box-shadow: 0 4px 12px var(--shadow-subtle) !important;
+    }
+}
+
+/* Regra específica para mobile pequeno */
+@media (max-width: 480px) {
+    .teams-grid .team-card .players-list,
+    #teams-container .team-card .players-list {
+        padding: 0.375rem !important;
+    }
+    
+    /* Força reset completo em mobile pequeno quando não selecionado */
+    .teams-grid .team-card:not(.selected) .players-list,
+    #teams-container .team-card:not(.selected) .players-list {
+        display: none !important;
+        height: 0 !important;
+        min-height: 0 !important;
+        max-height: 0 !important;
+        width: 0 !important;
+        min-width: 0 !important;
+        max-width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        background: transparent !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        position: absolute !important;
+        top: -9999px !important;
+        left: -9999px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        transform: scale(0) !important;
+        pointer-events: none !important;
+        z-index: -9999 !important;
+    }
+    
+    /* Força reset completo do card em mobile pequeno quando não selecionado */
+    .teams-grid .team-card:not(.selected),
+    #teams-container .team-card:not(.selected) {
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
+        background: var(--container-bg) !important;
+        border: 2px solid var(--border-soft) !important;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08) !important;
+    }
+    
+    /* Força reset do header em mobile pequeno quando não selecionado */
+    .teams-grid .team-card .team-header,
+    #teams-container .team-card .team-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08) !important;
+    }
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    background: var(--container-bg);
+    border-radius: 6px;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    min-height: 45px;
+}
+
+.legend-item:last-child {
+    margin-bottom: 0;
+}
+
+.legend-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 2px 8px var(--shadow-subtle);
+}
+
+.legend-color {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    border: 2px solid;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.legend-color::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    pointer-events: none;
+}
+
+.apto-legend {
+    background-color: var(--jogo-bg);
+    border-color: var(--success-color);
+    color: var(--success-dark);
+}
+
+.apto-legend:hover {
+    background-color: var(--table-row-even);
+    border-color: var(--success-dark);
+}
+
+.apto-legend .legend-color {
+    background: linear-gradient(135deg, var(--success-color), var(--success-dark));
+    border-color: var(--success-dark);
+    box-shadow: 0 2px 6px rgba(56, 161, 105, 0.3);
+}
+
+.nao-apto-legend {
+    background-color: var(--jogo-bg);
+    border-color: var(--danger-color);
+    color: var(--danger-dark);
+}
+
+.nao-apto-legend:hover {
+    background-color: var(--table-row-even);
+    border-color: var(--danger-dark);
+}
+
+.nao-apto-legend .legend-color {
+    background: linear-gradient(135deg, var(--danger-color), var(--danger-dark));
+    border-color: var(--danger-dark);
+    box-shadow: 0 2px 6px rgba(229, 62, 62, 0.3);
+}
+
+.legend-item span {
+    color: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.4;
+    flex: 1;
+}
+
+/* Mantém legendas e ações visíveis em todas as resoluções */
+@media (max-width: 1399px) {
+    /* PERMITE QUE A LISTA DE JOGADORES APAREÇA QUANDO NECESSÁRIO */
+    #team-players-list,
+    .team-players-list {
+        display: none; /* Esconde por padrão */
+        margin-top: 1rem !important;
+        background: var(--container-bg) !important;
+        border-radius: 8px !important;
+        box-shadow: 0 2px 8px var(--shadow-subtle) !important;
+        border: 1px solid var(--border-soft) !important;
+        overflow: hidden !important;
+    }
+    
+    /* QUANDO A CLASSE 'show' É ADICIONADA, MOSTRA A LISTA */
+    #team-players-list.show,
+    .team-players-list.show {
+        display: block !important;
+        visibility: visible !important;
+        height: auto !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+}
+
+/* Seção de ações responsiva */
+.actions-section {
+    text-align: center;
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+    font-family: inherit;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(37, 99, 235, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+}
+
+.btn-secondary {
+    background: var(--text-medium);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-left: 0.5rem;
+    font-family: inherit;
+}
+
+.btn-secondary:hover {
+    background: var(--text-dark);
+    transform: translateY(-1px);
+}
+
+.btn-secondary:active {
+    transform: translateY(0);
+}
+
+/* Responsividade para botões */
+@media (max-width: 768px) {
+    .btn-primary {
+        padding: 0.875rem 1.75rem;
+        font-size: 0.95rem;
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    /* Otimização específica para mobile médio */
+    .legend-section {
+        padding: 0.875rem;
+        margin-bottom: 0.875rem;
+        border-radius: 8px;
+    }
+    
+    .legend-item {
+        padding: 0.5rem 0.625rem;
+        gap: 0.5rem;
+        min-height: 30px;
+        margin-bottom: 0.375rem;
+    }
+    
+    .legend-color {
+        width: 15px;
+        height: 15px;
+        border-radius: 3px;
+    }
+    
+    .legend-item span {
+        font-size: 0.8rem;
+        line-height: 1.2;
+    }
+    
+    .btn-secondary {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.875rem;
+        margin-left: 0;
+        margin-top: 0.5rem;
+        width: 100%;
+    }
+    
+    .actions-section {
+        margin-top: 1.5rem;
+        padding: 0 1rem;
+    }
+    
+    /* Responsividade para legendas - mais compacta */
+    .legend-section {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+    }
+    
+    .legend-item {
+        padding: 0.5rem 0.75rem;
+        gap: 0.5rem;
+        min-height: 32px;
+        margin-bottom: 0.5rem;
+    }
+    
+    .legend-color {
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+    }
+    
+    .legend-item span {
+        font-size: 0.8rem;
+        line-height: 1.2;
+    }
+    
+    .legend-item:hover {
+        transform: translateX(2px);
+    }
+}
+
+@media (max-width: 480px) {
+    .btn-primary {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+        max-width: 280px;
+    }
+    
+    .btn-secondary {
+        padding: 0.625rem 1rem;
+        font-size: 0.8rem;
+        margin-top: 0.375rem;
+    }
+    
+    .actions-section {
+        margin-top: 1.25rem;
+        padding: 0 0.75rem;
+    }
+    
+    /* Responsividade para legendas em mobile pequeno - ultra compacta */
+    .legend-section {
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+        border-radius: 6px;
+    }
+    
+    .legend-item {
+        padding: 0.375rem 0.5rem;
+        gap: 0.375rem;
+        flex-direction: row;
+        text-align: left;
+        align-items: center;
+        min-height: 28px;
+        margin-bottom: 0.375rem;
+    }
+    
+    .legend-color {
+        width: 14px;
+        height: 14px;
+        border-radius: 3px;
+        flex-shrink: 0;
+    }
+    
+    .legend-item span {
+        font-size: 0.75rem;
+        line-height: 1.1;
+        text-align: left;
+    }
+    
+    .legend-item:hover {
+        transform: translateX(1px);
+    }
+}
+
+/* Modais responsivos */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.3s ease;
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background-color: var(--container-bg);
+    margin: 5% auto;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    animation: slideDown 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 16px 16px 0 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    pointer-events: none;
+}
+
+.modal-header h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    position: relative;
+    z-index: 1;
+}
+
+.close {
+    font-size: 2.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+    transition: all 0.2s ease;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    position: relative;
+    z-index: 1;
+}
+
+.close:hover {
+    color: var(--danger-color);
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.modal-body h4 {
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    position: relative;
+    padding-bottom: 0.75rem;
+}
+
+.modal-body h4::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+    border-radius: 2px;
+}
+
+/* Estilos específicos para o modal do jogador */
+.player-peladas-content {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    scroll-behavior: smooth;
+}
+
+/* Classe para forçar reset da rolagem */
+.player-peladas-content.scroll-reset {
+    scroll-behavior: auto;
+}
+
+.player-peladas-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.player-peladas-content::-webkit-scrollbar-track {
+    background: var(--background-light);
+    border-radius: 3px;
+}
+
+.player-peladas-content::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    border-radius: 3px;
+}
+
+.player-peladas-content::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+}
+
+/* Estatísticas do jogador responsivas */
+.player-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, var(--background-light), var(--table-row-even));
+    border-radius: 12px;
+    border: 2px solid var(--border-soft);
+}
+
+/* Container do total de peladas (largura total) */
+.stats-total {
+    text-align: center;
+}
+
+/* Container dos últimos dias (grid 1/3) */
+.stats-periods {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1rem;
+    background: var(--container-bg);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-2px);
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-medium);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Seção de peladas */
+.peladas-section h5 {
+    color: var(--text-dark);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-align: center;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border-soft);
+}
+
+/* Lista de peladas do jogador */
+.peladas-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.pelada-item {
+    background: linear-gradient(135deg, var(--background-light), var(--table-row-even));
+    border: 2px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.pelada-item::before {
+    content: '⚽';
+    font-size: 1.5rem;
+    opacity: 0.7;
+    flex-shrink: 0;
+}
+
+.pelada-item:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary-color);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15);
+    background: linear-gradient(135deg, var(--container-bg), var(--background-light));
+}
+
+.pelada-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.pelada-item:hover::after {
+    transform: scaleX(1);
+}
+
+.pelada-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.pelada-date {
+    font-weight: 700;
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+.pelada-tempo {
+    text-align: center;
+}
+
+/* Badges de tempo */
+.tempo-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: white;
+}
+
+.tempo-badge.recente {
+    background: linear-gradient(135deg, var(--success-color), var(--success-dark));
+    box-shadow: 0 2px 8px rgba(47, 184, 53, 0.3);
+}
+
+.tempo-badge.antigo {
+    background: linear-gradient(135deg, var(--danger-color), var(--danger-dark));
+    box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
+}
+
+/* Mensagem quando não há dados */
+.no-data {
+    text-align: center;
+    color: var(--text-medium);
+    font-style: italic;
+    padding: 2.5rem 2rem;
+    background: var(--container-bg);
+    border-radius: 12px;
+    border: 2px dashed var(--border-soft);
+    font-size: 1rem;
+    margin: 2rem 0;
+    box-shadow: 0 2px 6px var(--shadow-subtle);
+}
+
+.no-data::before {
+    content: '📅';
+    display: block;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.6;
+}
+
+/* Animações melhoradas */
+@keyframes fadeIn {
+    from { 
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+    to { 
+        opacity: 1;
+        backdrop-filter: blur(4px);
+    }
+}
+
+/* Keyframe slideDown removida - duplicada */
+
+/* Carregamento */
+.loading {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-medium);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.loading::after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    border: 2px solid var(--border-soft);
+    border-top: 2px solid var(--success-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Mensagens de erro */
+.error-message {
+    background: var(--jogo-bg);
+    color: var(--danger-dark);
+    padding: 2rem;
+    border-radius: 12px;
+    margin: 2rem 0;
+    border: 1px solid var(--danger-color);
+    text-align: center;
+}
+
+.error-message h3 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.error-message p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.error-details {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.error-details ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.error-details li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(197, 48, 48, 0.2);
+}
+
+.error-details li:last-child {
+    border-bottom: none;
+}
+
+.success-message {
+    background: var(--jogo-bg);
+    color: var(--success-dark);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    border: 1px solid var(--success-color);
+}
+
+/* Status adicional no nome do jogador */
+.player-item .player-status {
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+    opacity: 0.8;
+    text-align: right;
+    min-width: 100px;
+    font-weight: 500;
+}
+
+/* Seção de filtro responsiva */
+.filter-section {
+    background: var(--background-light);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.filter-section label {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.date-input {
+    border: 2px solid var(--border-soft);
+    padding: 0.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: border-color 0.2s ease;
+}
+
+.date-input:focus {
+    outline: none;
+    border-color: var(--success-color);
+}
+
+/* Conteúdo dos modais */
+.player-peladas-content, .peladas-content {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.players-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.team-players {
+    background: var(--background-light);
+    padding: 1rem;
+    border-radius: 6px;
+}
+
+.team-players h5 {
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.team-players ul {
+    list-style: none;
+    padding: 0;
+}
+
+.team-players li {
+    padding: 0.25rem 0;
+    color: var(--text-medium);
+    font-size: 0.9rem;
+}
+
+/* Responsividade para modais em telas menores */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .page-title {
+        font-size: 1.4rem;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 5% auto;
+        border-radius: 12px;
+        max-height: 90vh;
+    }
+    
+    .modal-header {
+        border-radius: 12px 12px 0 0;
+        padding: 1rem 1.5rem;
+    }
+    
+    .modal-header h3 {
+        font-size: 1.2rem;
+    }
+    
+    .modal-body {
+        padding: 1rem;
+    }
+    
+    /* Ajuste da lista de peladas para mobile */
+    .peladas-content {
+        max-height: 45vh;
+        overflow-y: auto;
+    }
+    
+    /* Reduzir espaçamento dos itens da lista em mobile */
+    .jogador-item {
+        padding: 0.5rem 0.75rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .jogador-numero {
+        font-size: 0.9rem;
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+    }
+    
+    .jogador-nome {
+        font-size: 0.9rem;
+    }
+    
+    .filter-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+    
+    .btn-secondary {
+        margin-left: 0;
+        margin-top: 0.5rem;
+    }
+    
+    .pelada-item {
+        padding: 1rem 1.25rem;
+        flex-direction: column;
+        text-align: center;
+        gap: 0.75rem;
+    }
+    
+    .pelada-item::before {
+        font-size: 1.25rem;
+    }
+    
+    .pelada-date {
+        font-size: 1rem;
+    }
+    
+    /* Melhorias para mobile */
+    .modal-content {
+        margin: 5% auto;
+        width: 92%;
+    }
+    
+    .modal-header {
+        padding: 1rem 1.25rem;
+    }
+    
+    .modal-body {
+        padding: 1.25rem;
+    }
+    
+    .filter-section {
+        padding: 1.25rem;
+    }
+}
+
+/* Responsividade para mobile pequeno */
+@media (max-width: 480px) {
+    .modal-content {
+        width: 95%;
+        margin: 2% auto;
+        border-radius: 8px;
+    }
+    
+    .modal-header {
+        border-radius: 8px 8px 0 0;
+        padding: 0.875rem 1rem;
+    }
+    
+    .modal-header h3 {
+        font-size: 1.1rem;
+    }
+    
+    .modal-body {
+        padding: 1rem;
+    }
+    
+    .filter-section {
+        padding: 1rem;
+        gap: 0.5rem;
+    }
+    
+    .pelada-item {
+        padding: 0.875rem 1rem;
+        gap: 0.5rem;
+    }
+    
+    .pelada-item::before {
+        font-size: 1.1rem;
+    }
+    
+    .pelada-date {
+        font-size: 0.95rem;
+    }
+}
+
+/* Estatísticas responsivas para mobile */
+@media (max-width: 768px) {
+    .player-stats {
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+    }
+    
+    .stats-total {
+        padding: 0;
+    }
+    
+    .stats-periods {
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 0.5rem;
+    }
+    
+    .stat-item {
+        padding: 0.5rem;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .stat-label {
+        font-size: 0.7rem;
+        line-height: 1.2;
+    }
+}
+
+/* Loading otimizado */
+.loading-optimized {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-medium);
+    background: var(--container-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px var(--shadow-subtle);
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border-soft);
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+.loading-optimized p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.loading-note {
+    font-size: 0.9rem;
+    color: var(--text-medium);
+    font-style: italic;
+}
+
+/* Status de carregamento dos jogadores */
+.player-item.loading-status {
+    background-color: var(--background-light);
+    border-color: var(--border-soft);
+    color: var(--text-medium);
+    cursor: default;
+}
+
+.player-item.loading-status:hover {
+    transform: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.loading-dots {
+    position: relative;
+    display: inline-block;
+}
+
+.loading-dots::after {
+    content: '';
+    animation: loadingDots 1.5s infinite;
+}
+
+@keyframes loadingDots {
+    0%, 20% { content: ''; }
+    40% { content: '.'; }
+    60% { content: '..'; }
+    80%, 100% { content: '...'; }
+}
+
+/* Estilos para a lista de jogadores por time no modal */
+.team-pelada-card {
+    background: var(--container-bg);
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s ease;
+}
+
+.team-pelada-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.team-pelada-header {
+    background: linear-gradient(135deg, var(--background-light), var(--table-row-even));
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-soft);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.team-pelada-header h5 {
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.team-logo-small {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.jogadores-presentes {
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.jogador-presente {
+    background: linear-gradient(135deg, var(--success-color), var(--success-dark));
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-block;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.jogador-presente:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(56, 161, 105, 0.3);
+}
+
+.pelada-info {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border-soft);
+}
+
+.pelada-info h4 {
+    color: var(--text-dark);
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.pelada-info h4::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
+    border-radius: 2px;
+    margin: 0.75rem auto 0;
+}
+
+/* Estilos para a lista numerada de jogadores */
+.jogadores-lista {
+    background: var(--container-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.jogador-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--table-border);
+    transition: background-color 0.2s ease;
+}
+
+.jogador-item:last-child {
+    border-bottom: none;
+}
+
+.jogador-item:hover {
+    background-color: var(--background-light);
+}
+
+.jogador-item:nth-child(even) {
+    background-color: var(--table-row-even);
+}
+
+.jogador-item:nth-child(even):hover {
+    background-color: var(--background-light);
+}
+
+.jogador-numero {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.jogador-nome {
+    color: var(--text-dark);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Lista de jogadores do time selecionado (mobile) */
+.team-players-list {
+    display: none; /* Esconde por padrão */
+    background: var(--container-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    border: 2px solid var(--border-soft);
+    margin-top: 2rem;
+    overflow: hidden;
+    animation: slideDown 0.3s ease;
+}
+
+.team-players-list.show {
+    display: block;
+}
+
+/* Garante que a seção não seja exibida incorretamente */
+.team-players-list:not(.show) {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    overflow: hidden !important;
+}
+
+.team-players-list .team-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 2px solid var(--warning-color);
+}
+
+.team-players-list .team-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--warning-color), var(--warning-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);
+    border: 2px solid var(--warning-color);
+}
+
+.team-players-list .team-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.team-players-list .players-list {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.team-players-list .player-item {
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 45px;
+}
+
+.team-players-list .player-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.team-players-list .player-item.apto {
+    background-color: var(--jogo-bg);
+    border-color: var(--success-color);
+    color: var(--success-dark);
+}
+
+.team-players-list .player-item.apto:hover {
+    background-color: var(--table-row-even);
+    border-color: var(--success-dark);
+}
+
+.team-players-list .player-item.nao-apto {
+    background-color: var(--jogo-bg);
+    border-color: var(--danger-color);
+    color: var(--danger-dark);
+}
+
+.team-players-list .player-item.nao-apto:hover {
+    background-color: var(--table-row-even);
+    border-color: var(--danger-dark);
+}
+
+.team-players-list .player-name {
+    font-weight: 500;
+    font-size: 0.95rem;
+    flex: 1;
+    margin-right: 1rem;
+}
+
+.team-players-list .player-status {
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+    opacity: 0.8;
+    text-align: right;
+    min-width: 100px;
+    font-weight: 500;
+}
+
+/* Responsividade para a lista de jogadores do time */
+@media (max-width: 768px) {
+    .team-players-list {
+        margin-top: 1.5rem;
+        border-radius: 8px;
+    }
+    
+    .team-players-list .team-header {
+        padding: 1.25rem;
+    }
+    
+    .team-players-list .team-logo {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .team-players-list .team-name {
+        font-size: 1.2rem;
+    }
+    
+    .team-players-list .players-list {
+        padding: 0.875rem;
+        gap: 0.375rem;
+    }
+    
+    .team-players-list .player-item {
+        padding: 0.625rem 0.875rem;
+        min-height: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .team-players-list {
+        margin-top: 1rem;
+        border-radius: 6px;
+    }
+    
+    .team-players-list .team-header {
+        padding: 1rem;
+    }
+    
+    .team-players-list .team-logo {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .team-players-list .team-name {
+        font-size: 1.1rem;
+    }
+    
+    .team-players-list .players-list {
+        padding: 0.75rem;
+        gap: 0.25rem;
+    }
+    
+    .team-players-list .player-item {
+        padding: 0.5rem 0.75rem;
+        min-height: 36px;
+    }
+    
+    .team-players-list .player-name {
+        font-size: 0.9rem;
+    }
+    
+    .team-players-list .player-status {
+        font-size: 0.75rem;
+        min-width: 80px;
+    }
+}
+
+/* Responsividade para estados vazios */
+@media (max-width: 768px) {
+    .loading {
+        padding: 2rem 1.5rem;
+        margin: 1.5rem 0;
+    }
+    
+    .no-data {
+        padding: 2rem 1.5rem;
+        margin: 1.5rem 0;
+    }
+    
+    .no-data::before {
+        font-size: 2rem;
+        margin-bottom: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .loading {
+        padding: 1.5rem 1rem;
+        margin: 1rem 0;
+    }
+    
+    .no-data {
+        padding: 1.5rem 1rem;
+        margin: 1rem 0;
+    }
+    
+    .no-data::before {
+        font-size: 1.75rem;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Melhorias para acessibilidade e usabilidade */
+@media (max-width: 768px) {
+    /* Aumenta área de toque para elementos interativos */
+    .team-header,
+    .player-item,
+    .btn-primary,
+    .btn-secondary {
+        min-height: 44px; /* Recomendação da Apple para área de toque */
+    }
+    
+    /* Melhora contraste em dispositivos móveis */
+    .team-header h3 {
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Adiciona indicadores visuais para elementos interativos */
+    .team-card.selected {
+        outline: 2px solid var(--warning-color);
+        outline-offset: 2px;
+    }
+}
+
+/* Animações suaves para transições */
+@media (max-width: 768px) {
+    .team-card,
+    .player-item,
+    .btn-primary,
+    .btn-secondary {
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* Feedback visual para toques */
+    .team-header:active,
+    .player-item:active,
+    .btn-primary:active,
+    .btn-secondary:active {
+        transform: scale(0.98);
+    }
+}
+
+/* Melhorias para telas de alta densidade (retina) */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .team-logo,
+    .jogador-numero {
+        border-width: 1px;
+    }
+    
+    .team-header::after,
+    .page-title::after {
+        height: 1px;
+    }
+}
+
+/* Regra final para sobrescrever qualquer intensificação */
+.teams-grid .team-card.selected .team-header,
+#teams-container .team-card.selected .team-header,
+.team-card.selected .team-header,
+.team-card.selected .team-header *,
+.team-card.selected .team-header::before,
+.team-card.selected .team-header::after {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)) !important;
+    box-shadow: 0 4px 12px var(--shadow-subtle) !important;
+    border: none !important;
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+    border-bottom: none !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+
+/* Regra para forçar altura igual em todos os cards */
+.team-card,
+.team-card.selected,
+.team-card:not(.selected) {
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+}
+
+/* Regra para forçar altura igual em todos os headers */
+.team-card .team-header,
+.team-card.selected .team-header,
+.team-card:not(.selected) .team-header {
+    height: auto !important;
+    min-height: 100px !important;
+    max-height: none !important;
+}
+
+/* Regra final para forçar altura igual em todos os casos */
+/* Desktop e Tablet - Cards se ajustam ao grid */
+@media (min-width: 769px) {
+    .teams-grid .team-card,
+    #teams-container .team-card,
+    .teams-grid .team-card.selected,
+    #teams-container .team-card.selected,
+    .team-card,
+    .team-card.selected,
+    .team-card:not(.selected) {
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
+        width: 100% !important;
+        min-width: auto !important;
+        max-width: none !important;
+    }
+}
+
+/* Mobile - Mantém largura fixa para melhor usabilidade */
+@media (max-width: 768px) {
+    .teams-grid .team-card,
+    #teams-container .team-card,
+    .teams-grid .team-card.selected,
+    #teams-container .team-card.selected,
+    .team-card,
+    .team-card.selected,
+    .team-card:not(.selected) {
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
+        width: 350px !important;
+        min-width: 350px !important;
+        max-width: 350px !important;
+    }
+}
+
+/* Regra para forçar altura exata do header */
+.teams-grid .team-card .team-header,
+#teams-container .team-card .team-header,
+.teams-grid .team-card.selected .team-header,
+#teams-container .team-card.selected .team-header,
+.team-card .team-header,
+.team-card.selected .team-header,
+.team-card:not(.selected) .team-header {
+    height: 100px !important;
+    min-height: 100px !important;
+    max-height: 100px !important;
+    padding: 20px !important;
+}
+
+.teams-grid .team-card .team-header,
+#teams-container .team-card .team-header,
+.teams-grid .team-card.selected .team-header,
+#teams-container .team-card.selected .team-header,
+.team-card .team-header,
+.team-card.selected .team-header,
+.team-card:not(.selected) .team-header {
+    height: auto !important;
+    min-height: 100px !important;
+    max-height: none !important;
+    padding: 1.25rem !important;
+}
+
+/* Modo noturno removido - mantém sempre o tema claro */
+
+/* Melhorias para orientação landscape em dispositivos móveis */
+@media (max-width: 768px) and (orientation: landscape) {
+    .header {
+        padding: 0.75rem 0;
+    }
+    
+    .header h1 {
+        font-size: 1.25rem;
+    }
+    
+    .page-title {
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .main-content {
+        padding: 1rem 0;
+    }
+    
+    .teams-grid,
+    #teams-container {
+        gap: 0.5rem;
+        margin: 0 0.75rem 1.5rem 0.75rem;
+    }
+    
+    .team-card .team-header {
+        padding: 0.75rem;
+        min-height: 60px;
+    }
+    
+    .team-logo {
+        width: 28px;
+        height: 28px;
+        font-size: 0.7rem;
+    }
+    
+    .team-header h3 {
+        font-size: 0.9rem;
+    }
+}
+
+/* Melhorias para dispositivos com tela muito pequena */
+@media (max-width: 360px) {
+    .header h1 {
+        font-size: 1.1rem;
+        letter-spacing: 0.25px;
+    }
+    
+    .page-title {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.375rem;
+    }
+    
+    .page-title::after {
+        width: 40px;
+        height: 1px;
+    }
+    
+    .main-content {
+        padding: 1rem 0;
+    }
+    
+    .container {
+        padding: 0 0.5rem;
+    }
+    
+    .teams-grid,
+    #teams-container {
+        margin: 0 0.5rem 1.25rem 0.5rem;
+        gap: 0.375rem;
+    }
+    
+    .team-card .team-header {
+        padding: 0.625rem;
+        min-height: 65px;
+        gap: 0.375rem;
+    }
+    
+    .team-logo {
+        width: 24px;
+        height: 24px;
+        font-size: 0.6rem;
+    }
+    
+    .team-header h3 {
+        font-size: 0.8rem;
+        line-height: 1.1;
+    }
+    
+    .modal-content {
+        width: 98%;
+        margin: 1% auto;
+        border-radius: 6px;
+    }
+    
+    .modal-header {
+        padding: 0.75rem 0.875rem;
+        border-radius: 6px 6px 0 0;
+    }
+    
+    .modal-header h3 {
+        font-size: 1rem;
+    }
+    
+    .modal-body {
+        padding: 0.875rem;
+    }
+    
+    .btn-primary {
+        padding: 0.625rem 1.25rem;
+        font-size: 0.85rem;
+        max-width: 260px;
+    }
+    
+    .btn-secondary {
+        padding: 0.5rem 0.875rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Estilos para bloquear interação com o fundo quando modais estiverem abertos */
+body.modal-open {
+    overflow: hidden !important;
+    pointer-events: none !important;
+}
+
+body.modal-open * {
+    pointer-events: none !important;
+}
+
+body.modal-open .modal,
+body.modal-open .modal * {
+    pointer-events: auto !important;
+}
+
+/* Garante que os modais tenham pointer-events habilitados */
+.modal {
+    pointer-events: auto !important;
+}
+
+.modal-content {
+    pointer-events: auto !important;
+}
