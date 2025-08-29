@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle da Pelada</title>
+    <link rel="stylesheet" href="../css/lista-pelada.css">
+    <!-- CSS para modo noturno -->
+    <link rel="stylesheet" href="../css/dark-mode-colors.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+    <!-- Botão de alternância de modo noturno -->
+    <button id="toggle-dark-mode" class="dark-toggle-button" title="Alternar modo claro/escuro"></button>
+    
+    <header class="header">
+        <div class="header-content">
+            <h1>SAPOS LEAGUE</h1>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <h2 class="page-title">Gestão de Jogadores</h2>
+            
+            <div class="teams-grid" id="teams-container">
+                <!-- Times serão carregados dinamicamente via JavaScript -->
+                <div class="loading">Carregando times e jogadores...</div>
+            </div>
+            
+            <!-- Lista de jogadores do time selecionado (mobile) -->
+            <div id="team-players-list" class="team-players-list">
+                <!-- Conteúdo será preenchido via JavaScript -->
+            </div>
+
+            <div class="legend-section">
+                <div class="legend-item apto-legend">
+                    <div class="legend-color"></div>
+                    <span>Jogador apto para jogar (participou de pelo menos uma pelada nos últimos 30 dias)</span>
+                </div>
+                <div class="legend-item nao-apto-legend">
+                    <div class="legend-color"></div>
+                    <span>Jogador não apto para jogar (não participou de nenhuma pelada nos últimos 30 dias)</span>
+                </div>
+            </div>
+
+            <div class="actions-section">
+                <button class="btn-primary" id="btn-ver-peladas">Ver lista de peladas anteriores</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal para detalhes do jogador -->
+    <div id="modal-player" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-player-name">Nome do Jogador</h3>
+                <span class="close" id="close-player-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <h4>Peladas participadas:</h4>
+                <div id="player-peladas-list" class="player-peladas-content">
+                    <!-- Lista será preenchida via JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para lista de peladas -->
+    <div id="modal-peladas" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Lista de Peladas Anteriores</h3>
+                <span class="close" id="close-peladas-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="filter-section">
+                    <label for="date-filter">Selecione a data da pelada:</label>
+                    <input type="date" id="date-filter" class="date-input">
+                    <button class="btn-secondary" id="btn-filter">Ver Pelada</button>
+                </div>
+                <div id="peladas-list" class="peladas-content">
+                    <p class="no-data">Selecione uma data para ver os jogadores da pelada</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/lista-pelada.js"></script>
+    <!-- Script para modo noturno -->
+    <script src="../js/dark-mode-logic.js"></script>
+</body>
+</html>
