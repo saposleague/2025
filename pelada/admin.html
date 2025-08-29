@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Gestão de Peladas</title>
+    <!-- CSS principal -->
+    <link rel="stylesheet" href="../css/admin-peladas.css">
+    <!-- CSS para modo noturno -->
+    <link rel="stylesheet" href="../css/dark-mode-colors.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+    <!-- Botão de alternância de modo noturno -->
+    <button id="toggle-dark-mode" class="dark-toggle-button" title="Alternar modo claro/escuro"></button>
+    
+
+
+    <div class="container">
+        <header class="header">
+            <h1>⚽ ADMIN - GESTÃO DE PELADAS</h1>
+            <div class="user-info">
+                <span id="user-email"></span>
+                <button id="logout-btn" class="btn-logout">🚪 Sair</button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">📅</div>
+                    <h2 class="card-title">Preparar Nova Pelada</h2>
+                </div>
+
+                <form id="pelada-form">
+                    <div class="form-group">
+                        <label class="form-label" for="data-pelada">Data da Pelada:</label>
+                        <input type="date" id="data-pelada" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="lista-jogadores">Lista de Jogadores (um por linha):</label>
+                        <textarea id="lista-jogadores" class="form-input form-textarea players-input" 
+                                  placeholder="Digite os nomes dos jogadores, um por linha:&#10;João Silva&#10;Pedro Santos&#10;Carlos Oliveira&#10;..." required></textarea>
+                        <div class="input-hint">Digite um nome por linha. O sistema processará automaticamente cada jogador.</div>
+                        <div class="input-hint" style="color: #28a745; font-weight: 500; margin-top: 8px;">
+                            💡 <strong>Novo:</strong> Jogadores não cadastrados serão automaticamente adicionados ao sistema (sem time)!
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" id="btn-preview" class="btn btn-primary">👁️ Visualizar Lista</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">📝</div>
+                    <h2 class="card-title">Observações</h2>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="observacoes">Observações (opcional):</label>
+                    <textarea id="observacoes" class="form-input form-textarea" 
+                              placeholder="Observações sobre a pelada, local, horário, regras especiais, etc."></textarea>
+                    <div class="input-hint">Adicione informações importantes sobre a pelada que os jogadores devem saber.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview da lista processada -->
+        <div id="preview-section" class="preview-section" style="display: none;">
+            <h3>📋 Preview da Lista Processada</h3>
+            <div id="preview-content" class="preview-content">
+                <!-- Conteúdo será preenchido via JavaScript -->
+            </div>
+            <div class="preview-actions">
+                <button id="btn-confirmar" class="btn btn-confirmar">✅ Confirmar e Cadastrar</button>
+                <button id="btn-editar" class="btn btn-editar-lista">✏️ Editar Lista</button>
+            </div>
+        </div>
+
+        <div class="management-section">
+            <div class="management-icon">🔧</div>
+            <h2 class="management-title">Gerenciar Peladas Existentes</h2>
+            <p class="management-desc">Visualize, edite e gerencie todas as peladas cadastradas no sistema.</p>
+            <button class="btn btn-manage" onclick="abrirGerenciadorPeladas()">🔍 Ver e Editar Peladas</button>
+        </div>
+    </div>
+
+    <!-- Modal de confirmação -->
+    <div id="modal-confirmacao" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirmação de Cadastro</h3>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message">Tem certeza que deseja cadastrar esta pelada?</p>
+                <div id="modal-details"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-cancelar" class="btn btn-secondary">❌ Cancelar</button>
+                <button id="btn-confirmar-final" class="btn btn-primary">✅ Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de sucesso -->
+    <div id="modal-sucesso" class="modal">
+        <div class="modal-content">
+            <div class="modal-header success">
+                <h3>🎉 Sucesso!</h3>
+            </div>
+            <div class="modal-body">
+                <p id="sucesso-message">Pelada cadastrada com sucesso!</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-ok" class="btn btn-primary">👍 OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DO GERENCIADOR DE PELADAS -->
+    <div id="modal-gerenciador-overlay" class="gerenciador-modal-overlay" style="display: none;">
+        <div id="modal-gerenciador-content" class="modal-gerenciador">
+            <!-- Cabeçalho do Modal -->
+            <div class="modal-header-gerenciador">
+                <div class="modal-title">
+                    <div class="modal-icon">⚽</div>
+                    <span>Gerenciador de Peladas</span>
+                </div>
+                <button class="close-btn" onclick="fecharGerenciadorPeladas()">
+                    <span>×</span>
+                </button>
+            </div>
+
+            <!-- Corpo do Modal -->
+            <div class="modal-body-gerenciador">
+                <!-- Seção de Filtros -->
+                <div class="filters-section">
+                    <div class="filters-title">
+                        <span>🔍</span>
+                        <span>Filtros de Busca</span>
+                    </div>
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label class="filter-label">Data Início:</label>
+                            <input type="date" id="filtro-data-inicio" class="filter-input" onchange="aplicarFiltros()">
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Data Fim:</label>
+                            <input type="date" id="filtro-data-fim" class="filter-input" onchange="aplicarFiltros()">
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Mínimo de Jogadores:</label>
+                            <select id="filtro-min-jogadores" class="filter-select">
+                                <option value="">Todos</option>
+                                <option value="10">10+</option>
+                                <option value="15">15+</option>
+                                <option value="20">20+</option>
+                                <option value="25">25+</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <button class="filter-btn" onclick="aplicarFiltros()">
+                                <span>🔍</span>
+                                <span>Filtrar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lista de Peladas -->
+                <div id="peladas-container" class="peladas-list">
+                    <!-- Exemplo de pelada (será populado via JavaScript) -->
+                    <div class="pelada-card">
+                        <div class="pelada-header">
+                            <div class="pelada-date">
+                                <span>📅</span>
+                                <span>15/08/2025</span>
+                            </div>
+                            <div class="pelada-count">
+                                <span>👥 22 jogadores</span>
+                            </div>
+                        </div>
+                        
+                        <div class="pelada-players">
+                            <div class="players-label">Jogadores:</div>
+                            <div class="players-list">
+                                João Silva, Pedro Santos, Carlos Oliveira, Ana Costa, Bruno Alves, Diego Ferreira, Eduardo Lima, Fernando Rocha, Gabriel Torres, Helena Martins, Igor Nascimento, Juliana Pereira, Kleber Souza, Luana Barbosa, Marcos Vieira, Natália Ramos, Otávio Cardoso, Paula Mendes, Rafael Costa, Sofia Rodrigues, Thiago Nunes, Vanessa Castro
+                            </div>
+                        </div>
+
+                        <div class="pelada-observations">
+                            <div class="obs-label">Observações:</div>
+                            <div class="obs-text">Pelada no campo do clube. Início às 14h. Levar água e chuteira.</div>
+                        </div>
+
+                        <div class="pelada-actions">
+                            <button class="action-btn btn-edit" onclick="editarPelada(123)">
+                                <span>✏️</span>
+                                <span>Editar</span>
+                            </button>
+                            <button class="action-btn btn-delete" onclick="excluirPelada(123)">
+                                <span>🗑️</span>
+                                <span>Excluir</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Estado vazio (quando não há peladas) -->
+                    <div id="empty-state" class="empty-state" style="display: none;">
+                        <div class="empty-icon">😔</div>
+                        <div class="empty-title">Nenhuma pelada encontrada</div>
+                        <div class="empty-text">
+                            Não foram encontradas peladas com os filtros aplicados.<br>
+                            Tente ajustar os critérios de busca ou cadastre uma nova pelada.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paginação -->
+                <div class="paginacao">
+                    <div class="paginacao-info">
+                        Mostrando <span id="info-inicio">1</span> a <span id="info-fim">10</span> de <span id="info-total">45</span> peladas
+                    </div>
+                    <div class="paginacao-controles">
+                        <button class="btn-pagina" id="btn-anterior" onclick="paginaAnterior()">‹ Anterior</button>
+                        <button class="btn-pagina active" onclick="irParaPagina(1)">1</button>
+                        <button class="btn-pagina" onclick="irParaPagina(2)">2</button>
+                        <button class="btn-pagina" onclick="irParaPagina(3)">3</button>
+                        <button class="btn-pagina" onclick="irParaPagina(4)">4</button>
+                        <button class="btn-pagina" onclick="irParaPagina(5)">5</button>
+                        <button class="btn-pagina" id="btn-proximo" onclick="proximaPagina()">Próximo ›</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- 
+        ORDEM DE CARREGAMENTO IMPORTANTE:
+        1. Firebase - para autenticação
+        2. Supabase - biblioteca principal
+        3. config.js - configurações e inicialização do cliente
+        4. admin-peladas.js - funcionalidades principais
+    -->
+    
+    <!-- 1. Firebase - para verificação de autenticação -->
+    <script type="module" src="../js/firebase-config.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js"></script>
+    
+    <!-- 2. Supabase - deve ser carregado primeiro -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+    
+    <!-- 3. Sistema de alerts personalizados -->
+    <script src="../js/alert-manager.js"></script>
+    
+    <!-- 4. Configurações e utilitários -->
+    <script src="../js/config.js"></script>
+    
+          <!-- 5. Scripts principais (aguardam DOM e Supabase) -->
+      <script src="../js/admin-peladas.js"></script>
+      
+      <!-- 6. Gerenciador de autenticação -->
+    <script type="module" src="../js/auth-manager.js"></script>
+
+    <script>
+        // Adicionar mais partículas dinamicamente
+        function createParticles() {
+            const container = document.querySelector('.floating-particles');
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = (Math.random() * 15 + 10) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Animação suave para os campos de input
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+
+        // Validação básica do formulário
+        document.getElementById('pelada-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const data = document.getElementById('data-pelada').value;
+            const jogadores = document.getElementById('lista-jogadores').value.trim();
+            
+            if (!data || !jogadores) {
+                showWarning('Atenção!', 'Por favor, preencha a data e a lista de jogadores!');
+                return;
+            }
+            
+            // Feedback de sucesso
+            showSuccess('Formulário válido!', 'Agora clique em "Visualizar Lista" para continuar.');
+        });
+
+        // Criar partículas ao carregar a página
+        createParticles();
+
+        // Funções do gerenciador estão implementadas no arquivo JavaScript
+
+        // Função aplicarFiltros está implementada no arquivo JavaScript
+
+        // Função editarPelada está implementada no arquivo JavaScript
+
+        // Função excluirPelada está implementada no arquivo JavaScript
+
+        // Funções de paginação estão implementadas no arquivo JavaScript
+
+        // Modal não fecha ao clicar fora (removido para melhor UX)
+    </script>
+    
+    <!-- Script para modo noturno -->
+    <script src="../js/dark-mode-logic.js"></script>
+</body>
+</html>
