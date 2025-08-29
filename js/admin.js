@@ -30,7 +30,15 @@ form.addEventListener("submit", async (e) => {
 
   try {
     await signInWithEmailAndPassword(auth, email, senha);
-    window.location.href = "painel.html";
+    
+    // Verificar se há uma URL de redirecionamento salva
+    const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
+    if (redirectUrl) {
+      sessionStorage.removeItem('redirectAfterLogin');
+      window.location.href = redirectUrl;
+    } else {
+      window.location.href = "admin.html";
+    }
   } catch (err) {
     let errorMessage = "Ocorreu um erro desconhecido.";
     switch (err.code) {
