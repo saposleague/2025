@@ -5,306 +5,354 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Relatório de Presenças</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/recharts@2.5.0/dist/Recharts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+        }
+        #app { min-height: 100vh; }
+    </style>
 </head>
 <body>
-    <div id="root"></div>
+    <div id="app"></div>
 
-    <script type="text/babel">
-        const { useState } = React;
-        const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } = Recharts;
+    <script>
+        // Configuração inicial
+        const CONFIG = {
+            supabaseUrl: 'https://yaapgjkvkhsfsskkbmso.supabase.co',
+            supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhYXBnamt2a2hzZnNza2tibXNvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUwOTQ3MjUsImV4cCI6MjA3MDY3MDcyNX0.RiPWRX__AjuioaLVU5gkJFuOpVdBYwCN0HuD2gd0laM'
+        };
 
-        function RelatorioPresencas() {
-            const [supabaseUrl, setSupabaseUrl] = useState('https://yaapgjkvkhsfsskkbmso.supabase.co');
-            const [supabaseKey, setSupabaseKey] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhYXBnamt2a2hzZnNza2tibXNvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUwOTQ3MjUsImV4cCI6MjA3MDY3MDcyNX0.RiPWRX__AjuioaLVU5gkJFuOpVdBYwCN0HuD2gd0laM');
-            const [dados, setDados] = useState([]);
-            const [loading, setLoading] = useState(false);
-            const [erro, setErro] = useState('');
-            const [conectado, setConectado] = useState(false);
+        let state = {
+            conectado: false,
+            dados: [],
+            loading: false,
+            erro: ''
+        };
 
-            const CORES = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d', '#ffc658', '#ff7c7c'];
+        // Cores para os gráficos
+        const CORES = [
+            '#0088FE', '#00C49F', '#FFBB28', '#FF8042', 
+            '#8884d8', '#82ca9d', '#ffc658', '#ff7c7c'
+        ];
 
-            const buscarDados = async () => {
-                setLoading(true);
-                setErro('');
-                
-                try {
-                    let urlNormalizada = supabaseUrl.trim();
-                    if (!urlNormalizada.startsWith('http://') && !urlNormalizada.startsWith('https://')) {
-                        urlNormalizada = 'https://' + urlNormalizada;
-                    }
-                    
-                    console.log('URL normalizada:', urlNormalizada);
-                    
-                    const jogadoresRes = await fetch(`${urlNormalizada}/rest/v1/jogadores?select=*`, {
-                        method: 'GET',
-                        headers: {
-                            'apikey': supabaseKey,
-                            'Authorization': `Bearer ${supabaseKey}`,
-                            'Content-Type': 'application/json',
-                            'Prefer': 'return=representation'
-                        }
-                    });
+        // Função para buscar dados do Supabase
+        async function buscarDados() {
+            state.loading = true;
+            state.erro = '';
+            render();
 
-                    console.log('Status da resposta jogadores:', jogadoresRes.status);
-                    
-                    if (!jogadoresRes.ok) {
-                        const errorText = await jogadoresRes.text();
-                        console.error('Erro jogadores:', errorText);
-                        throw new Error(`Erro ao buscar jogadores: ${jogadoresRes.status} - ${errorText}`);
-                    }
-
-                    const jogadores = await jogadoresRes.json();
-                    console.log('Jogadores encontrados:', jogadores.length, jogadores);
-
-                    const presencasRes = await fetch(`${urlNormalizada}/rest/v1/presencas?select=*`, {
-                        method: 'GET',
-                        headers: {
-                            'apikey': supabaseKey,
-                            'Authorization': `Bearer ${supabaseKey}`,
-                            'Content-Type': 'application/json',
-                            'Prefer': 'return=representation'
-                        }
-                    });
-
-                    console.log('Status da resposta presenças:', presencasRes.status);
-                    
-                    if (!presencasRes.ok) {
-                        const errorText = await presencasRes.text();
-                        console.error('Erro presenças:', errorText);
-                        throw new Error(`Erro ao buscar presenças: ${presencasRes.status} - ${errorText}`);
-                    }
-
-                    const presencas = await presencasRes.json();
-                    console.log('Presenças encontradas:', presencas.length, presencas);
-
-                    const relatorio = jogadores.map(j => {
-                        const presencasJogador = presencas.filter(p => p.jogador_id === j.id);
-                        const datas = presencasJogador
-                            .map(p => p.data_pelada ? new Date(p.data_pelada) : null)
-                            .filter(d => d !== null);
-                        
-                        return {
-                            id: j.id,
-                            nome: j.nome || 'Sem nome',
-                            total_presencas: presencasJogador.length,
-                            primeira_presenca: datas.length > 0 ? new Date(Math.min(...datas)).toLocaleDateString('pt-BR') : '-',
-                            ultima_presenca: datas.length > 0 ? new Date(Math.max(...datas)).toLocaleDateString('pt-BR') : '-'
-                        };
-                    });
-
-                    relatorio.sort((a, b) => b.total_presencas - a.total_presencas);
-                    setDados(relatorio);
-                    setConectado(true);
-                    
-                } catch (err) {
-                    console.error('Erro detalhado:', err);
-                    setErro(`${err.message}. Verifique: 1) Se a URL está correta, 2) Se a API Key é válida, 3) Se as tabelas 'jogadores' e 'presencas' existem no banco.`);
-                } finally {
-                    setLoading(false);
+            try {
+                let urlNormalizada = CONFIG.supabaseUrl.trim();
+                if (!urlNormalizada.startsWith('http://') && !urlNormalizada.startsWith('https://')) {
+                    urlNormalizada = 'https://' + urlNormalizada;
                 }
-            };
 
-            const totalPresencas = dados.reduce((sum, d) => sum + d.total_presencas, 0);
-            const mediaPresencas = dados.length > 0 ? (totalPresencas / dados.length).toFixed(1) : 0;
+                console.log('Buscando dados de:', urlNormalizada);
 
-            if (!conectado) {
-                return (
-                    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8">
-                        <div className="max-w-2xl mx-auto">
-                            <div className="bg-slate-800 rounded-2xl shadow-2xl p-8 border border-slate-700">
-                                <div className="text-center mb-8">
-                                    <h1 className="text-4xl font-bold text-white mb-2">⚽ Relatório de Presenças</h1>
-                                    <p className="text-slate-400">Conecte-se ao Supabase para começar</p>
+                // Buscar jogadores
+                const jogadoresRes = await fetch(`${urlNormalizada}/rest/v1/jogadores?select=*`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': CONFIG.supabaseKey,
+                        'Authorization': `Bearer ${CONFIG.supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!jogadoresRes.ok) {
+                    throw new Error(`Erro ao buscar jogadores: ${jogadoresRes.status}`);
+                }
+
+                const jogadores = await jogadoresRes.json();
+                console.log('Jogadores:', jogadores);
+
+                // Buscar presenças
+                const presencasRes = await fetch(`${urlNormalizada}/rest/v1/presencas?select=*`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': CONFIG.supabaseKey,
+                        'Authorization': `Bearer ${CONFIG.supabaseKey}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!presencasRes.ok) {
+                    throw new Error(`Erro ao buscar presenças: ${presencasRes.status}`);
+                }
+
+                const presencas = await presencasRes.json();
+                console.log('Presenças:', presencas);
+
+                // Processar dados
+                const relatorio = jogadores.map(j => {
+                    const presencasJogador = presencas.filter(p => p.jogador_id === j.id);
+                    const datas = presencasJogador
+                        .map(p => p.data_pelada ? new Date(p.data_pelada) : null)
+                        .filter(d => d !== null);
+                    
+                    return {
+                        id: j.id,
+                        nome: j.nome || 'Sem nome',
+                        total_presencas: presencasJogador.length,
+                        primeira_presenca: datas.length > 0 
+                            ? new Date(Math.min(...datas)).toLocaleDateString('pt-BR') 
+                            : '-',
+                        ultima_presenca: datas.length > 0 
+                            ? new Date(Math.max(...datas)).toLocaleDateString('pt-BR') 
+                            : '-'
+                    };
+                });
+
+                relatorio.sort((a, b) => b.total_presencas - a.total_presencas);
+                state.dados = relatorio;
+                state.conectado = true;
+                state.loading = false;
+
+                render();
+                criarGraficos();
+
+            } catch (err) {
+                console.error('Erro:', err);
+                state.erro = err.message;
+                state.loading = false;
+                render();
+            }
+        }
+
+        // Criar gráficos com Chart.js
+        function criarGraficos() {
+            if (state.dados.length === 0) return;
+
+            setTimeout(() => {
+                // Gráfico de barras
+                const ctxBar = document.getElementById('chartBar');
+                if (ctxBar) {
+                    const top10 = state.dados.slice(0, 10);
+                    new Chart(ctxBar, {
+                        type: 'bar',
+                        data: {
+                            labels: top10.map(d => d.nome),
+                            datasets: [{
+                                label: 'Presenças',
+                                data: top10.map(d => d.total_presencas),
+                                backgroundColor: '#3b82f6',
+                                borderRadius: 8
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: '#1e293b',
+                                    titleColor: '#e2e8f0',
+                                    bodyColor: '#e2e8f0'
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: { color: '#9CA3AF' },
+                                    grid: { color: '#374151' }
+                                },
+                                x: {
+                                    ticks: { color: '#9CA3AF' },
+                                    grid: { display: false }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Gráfico de pizza
+                const ctxPie = document.getElementById('chartPie');
+                if (ctxPie) {
+                    const top8 = state.dados.slice(0, 8);
+                    new Chart(ctxPie, {
+                        type: 'doughnut',
+                        data: {
+                            labels: top8.map(d => d.nome),
+                            datasets: [{
+                                data: top8.map(d => d.total_presencas),
+                                backgroundColor: CORES,
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: { color: '#e2e8f0', padding: 15 }
+                                },
+                                tooltip: {
+                                    backgroundColor: '#1e293b',
+                                    titleColor: '#e2e8f0',
+                                    bodyColor: '#e2e8f0'
+                                }
+                            }
+                        }
+                    });
+                }
+            }, 100);
+        }
+
+        // Função de renderização
+        function render() {
+            const app = document.getElementById('app');
+
+            if (!state.conectado) {
+                app.innerHTML = `
+                    <div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8">
+                        <div class="max-w-2xl mx-auto">
+                            <div class="bg-slate-800 rounded-2xl shadow-2xl p-8 border border-slate-700">
+                                <div class="text-center mb-8">
+                                    <h1 class="text-4xl font-bold text-white mb-2">⚽ Relatório de Presenças</h1>
+                                    <p class="text-slate-400">Sistema de controle de jogadores</p>
                                 </div>
 
-                                <div className="space-y-6">
-                                    <div>
-                                        <label className="block text-sm font-medium text-slate-300 mb-2">
-                                            URL do Supabase
-                                        </label>
-                                        <input
-                                            type="text"
-                                            placeholder="https://seu-projeto.supabase.co"
-                                            value={supabaseUrl}
-                                            onChange={(e) => setSupabaseUrl(e.target.value)}
-                                            className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        />
+                                ${state.erro ? `
+                                    <div class="bg-red-900/50 border border-red-700 rounded-lg p-4 mb-6">
+                                        <p class="text-red-200 text-sm font-medium mb-2">❌ Erro na conexão:</p>
+                                        <p class="text-red-300 text-xs">${state.erro}</p>
                                     </div>
+                                ` : ''}
 
-                                    <div>
-                                        <label className="block text-sm font-medium text-slate-300 mb-2">
-                                            API Key (anon/public)
-                                        </label>
-                                        <input
-                                            type="password"
-                                            placeholder="eyJhbGc..."
-                                            value={supabaseKey}
-                                            onChange={(e) => setSupabaseKey(e.target.value)}
-                                            className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        />
-                                    </div>
+                                <button
+                                    onclick="buscarDados()"
+                                    ${state.loading ? 'disabled' : ''}
+                                    class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-slate-600 disabled:to-slate-700 text-white font-semibold py-4 px-6 rounded-lg transition-all disabled:cursor-not-allowed shadow-lg text-lg"
+                                >
+                                    ${state.loading ? '🔄 Carregando...' : '🚀 Carregar Relatório'}
+                                </button>
 
-                                    {erro && (
-                                        <div className="bg-red-900/50 border border-red-700 rounded-lg p-4">
-                                            <p className="text-red-200 text-sm font-medium mb-2">❌ Erro na conexão:</p>
-                                            <p className="text-red-300 text-xs leading-relaxed">{erro}</p>
-                                        </div>
-                                    )}
-
-                                    <button
-                                        onClick={buscarDados}
-                                        disabled={loading || !supabaseUrl || !supabaseKey}
-                                        className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-slate-600 disabled:to-slate-700 text-white font-semibold py-3 px-6 rounded-lg transition-all disabled:cursor-not-allowed shadow-lg"
-                                    >
-                                        {loading ? '🔄 Conectando...' : '🚀 Conectar e Buscar Dados'}
-                                    </button>
-                                </div>
-
-                                <div className="mt-8 space-y-3">
-                                    <div className="p-4 bg-slate-700/50 rounded-lg">
-                                        <p className="text-xs text-slate-400 leading-relaxed">
-                                            <strong className="text-slate-300">💡 Onde encontrar:</strong> Painel do Supabase → Settings → API
-                                        </p>
-                                    </div>
+                                <div class="mt-6 p-4 bg-slate-700/50 rounded-lg">
+                                    <p class="text-xs text-slate-400 text-center">
+                                        Clique no botão acima para visualizar o relatório de presenças
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                );
+                `;
+                return;
             }
 
-            return (
-                <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8">
-                    <div className="max-w-7xl mx-auto">
-                        <div className="flex justify-between items-center mb-8">
+            const totalPresencas = state.dados.reduce((sum, d) => sum + d.total_presencas, 0);
+            const mediaPresencas = state.dados.length > 0 
+                ? (totalPresencas / state.dados.length).toFixed(1) 
+                : 0;
+
+            app.innerHTML = `
+                <div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8">
+                    <div class="max-w-7xl mx-auto">
+                        <!-- Header -->
+                        <div class="flex justify-between items-center mb-8">
                             <div>
-                                <h1 className="text-4xl font-bold text-white mb-2">⚽ Relatório de Presenças</h1>
-                                <p className="text-slate-400">Acompanhe a participação de cada jogador</p>
+                                <h1 class="text-4xl font-bold text-white mb-2">⚽ Relatório de Presenças</h1>
+                                <p class="text-slate-400">Acompanhe a participação de cada jogador</p>
                             </div>
                             <button
-                                onClick={() => {
-                                    setConectado(false);
-                                    setErro('');
-                                }}
-                                className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+                                onclick="location.reload()"
+                                class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
                             >
-                                🔌 Desconectar
+                                🔄 Atualizar
                             </button>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-6 shadow-lg">
-                                <div className="text-blue-100 text-sm font-medium mb-1">Total de Jogadores</div>
-                                <div className="text-4xl font-bold text-white">{dados.length}</div>
+                        <!-- Cards de Estatísticas -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div class="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-6 shadow-lg">
+                                <div class="text-blue-100 text-sm font-medium mb-1">Total de Jogadores</div>
+                                <div class="text-4xl font-bold text-white">${state.dados.length}</div>
                             </div>
-                            <div className="bg-gradient-to-br from-green-600 to-green-700 rounded-xl p-6 shadow-lg">
-                                <div className="text-green-100 text-sm font-medium mb-1">Total de Presenças</div>
-                                <div className="text-4xl font-bold text-white">{totalPresencas}</div>
+                            <div class="bg-gradient-to-br from-green-600 to-green-700 rounded-xl p-6 shadow-lg">
+                                <div class="text-green-100 text-sm font-medium mb-1">Total de Presenças</div>
+                                <div class="text-4xl font-bold text-white">${totalPresencas}</div>
                             </div>
-                            <div className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl p-6 shadow-lg">
-                                <div className="text-purple-100 text-sm font-medium mb-1">Média por Jogador</div>
-                                <div className="text-4xl font-bold text-white">{mediaPresencas}</div>
+                            <div class="bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl p-6 shadow-lg">
+                                <div class="text-purple-100 text-sm font-medium mb-1">Média por Jogador</div>
+                                <div class="text-4xl font-bold text-white">${mediaPresencas}</div>
                             </div>
                         </div>
 
-                        {dados.length > 0 && (
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                                <div className="bg-slate-800 rounded-2xl p-6 border border-slate-700 shadow-xl">
-                                    <h2 className="text-xl font-bold text-white mb-4">📊 Presenças por Jogador</h2>
-                                    <ResponsiveContainer width="100%" height={300}>
-                                        <BarChart data={dados.slice(0, 10)}>
-                                            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                                            <XAxis dataKey="nome" stroke="#9CA3AF" angle={-45} textAnchor="end" height={100} />
-                                            <YAxis stroke="#9CA3AF" />
-                                            <Tooltip 
-                                                contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }}
-                                                labelStyle={{ color: '#e2e8f0' }}
-                                            />
-                                            <Bar dataKey="total_presencas" fill="#3b82f6" radius={[8, 8, 0, 0]} />
-                                        </BarChart>
-                                    </ResponsiveContainer>
+                        <!-- Gráficos -->
+                        ${state.dados.length > 0 ? `
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                                <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 shadow-xl">
+                                    <h2 class="text-xl font-bold text-white mb-4">📊 Top 10 Jogadores</h2>
+                                    <div style="height: 300px;">
+                                        <canvas id="chartBar"></canvas>
+                                    </div>
                                 </div>
 
-                                <div className="bg-slate-800 rounded-2xl p-6 border border-slate-700 shadow-xl">
-                                    <h2 className="text-xl font-bold text-white mb-4">🥧 Distribuição Top 8</h2>
-                                    <ResponsiveContainer width="100%" height={300}>
-                                        <PieChart>
-                                            <Pie
-                                                data={dados.slice(0, 8)}
-                                                dataKey="total_presencas"
-                                                nameKey="nome"
-                                                cx="50%"
-                                                cy="50%"
-                                                outerRadius={100}
-                                                label={(entry) => `${entry.nome}: ${entry.total_presencas}`}
-                                            >
-                                                {dados.slice(0, 8).map((entry, index) => (
-                                                    <Cell key={`cell-${index}`} fill={CORES[index % CORES.length]} />
-                                                ))}
-                                            </Pie>
-                                            <Tooltip 
-                                                contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }}
-                                            />
-                                        </PieChart>
-                                    </ResponsiveContainer>
+                                <div class="bg-slate-800 rounded-2xl p-6 border border-slate-700 shadow-xl">
+                                    <h2 class="text-xl font-bold text-white mb-4">🥧 Distribuição Top 8</h2>
+                                    <div style="height: 300px;">
+                                        <canvas id="chartPie"></canvas>
+                                    </div>
                                 </div>
                             </div>
-                        )}
+                        ` : ''}
 
-                        <div className="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 overflow-hidden">
-                            <div className="overflow-x-auto">
-                                <table className="w-full">
+                        <!-- Tabela -->
+                        <div class="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full">
                                     <thead>
-                                        <tr className="bg-slate-700">
-                                            <th className="px-6 py-4 text-left text-sm font-semibold text-slate-200">#</th>
-                                            <th className="px-6 py-4 text-left text-sm font-semibold text-slate-200">Jogador</th>
-                                            <th className="px-6 py-4 text-center text-sm font-semibold text-slate-200">Presenças</th>
-                                            <th className="px-6 py-4 text-center text-sm font-semibold text-slate-200">Primeira</th>
-                                            <th className="px-6 py-4 text-center text-sm font-semibold text-slate-200">Última</th>
+                                        <tr class="bg-slate-700">
+                                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-200">#</th>
+                                            <th class="px-6 py-4 text-left text-sm font-semibold text-slate-200">Jogador</th>
+                                            <th class="px-6 py-4 text-center text-sm font-semibold text-slate-200">Presenças</th>
+                                            <th class="px-6 py-4 text-center text-sm font-semibold text-slate-200">Primeira</th>
+                                            <th class="px-6 py-4 text-center text-sm font-semibold text-slate-200">Última</th>
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-slate-700">
-                                        {dados.map((jogador, idx) => (
-                                            <tr key={jogador.id} className="hover:bg-slate-700/50 transition-colors">
-                                                <td className="px-6 py-4 text-slate-400 font-medium">{idx + 1}</td>
-                                                <td className="px-6 py-4">
-                                                    <div className="flex items-center">
-                                                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold mr-3">
-                                                            {jogador.nome.charAt(0).toUpperCase()}
+                                    <tbody class="divide-y divide-slate-700">
+                                        ${state.dados.map((jogador, idx) => `
+                                            <tr class="hover:bg-slate-700/50 transition-colors">
+                                                <td class="px-6 py-4 text-slate-400 font-medium">${idx + 1}</td>
+                                                <td class="px-6 py-4">
+                                                    <div class="flex items-center">
+                                                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold mr-3">
+                                                            ${jogador.nome.charAt(0).toUpperCase()}
                                                         </div>
-                                                        <span className="text-white font-medium">{jogador.nome}</span>
+                                                        <span class="text-white font-medium">${jogador.nome}</span>
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-4 text-center">
-                                                    <span className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-600 text-white font-bold text-lg">
-                                                        {jogador.total_presencas}
+                                                <td class="px-6 py-4 text-center">
+                                                    <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-600 text-white font-bold text-lg">
+                                                        ${jogador.total_presencas}
                                                     </span>
                                                 </td>
-                                                <td className="px-6 py-4 text-center text-slate-300">{jogador.primeira_presenca}</td>
-                                                <td className="px-6 py-4 text-center text-slate-300">{jogador.ultima_presenca}</td>
+                                                <td class="px-6 py-4 text-center text-slate-300">${jogador.primeira_presenca}</td>
+                                                <td class="px-6 py-4 text-center text-slate-300">${jogador.ultima_presenca}</td>
                                             </tr>
-                                        ))}
+                                        `).join('')}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
 
-                        {dados.length === 0 && (
-                            <div className="bg-slate-800 rounded-2xl p-12 text-center border border-slate-700">
-                                <p className="text-slate-400 text-lg">✅ Conectado! Mas não há dados para exibir.</p>
-                                <p className="text-slate-500 text-sm mt-2">Adicione jogadores e presenças no seu banco de dados.</p>
+                        ${state.dados.length === 0 ? `
+                            <div class="bg-slate-800 rounded-2xl p-12 text-center border border-slate-700">
+                                <p class="text-slate-400 text-lg">✅ Conectado! Mas não há dados para exibir.</p>
+                                <p class="text-slate-500 text-sm mt-2">Adicione jogadores e presenças no seu banco de dados.</p>
                             </div>
-                        )}
+                        ` : ''}
                     </div>
                 </div>
-            );
+            `;
         }
 
-        ReactDOM.render(<RelatorioPresencas />, document.getElementById('root'));
+        // Renderização inicial
+        render();
     </script>
 </body>
 </html>
