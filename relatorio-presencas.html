@@ -43,6 +43,104 @@
             '#8884d8', '#82ca9d', '#ffc658', '#ff7c7c'
         ];
 
+        // Função para exportar para PDF
+        function exportarPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Título
+            doc.setFontSize(18);
+            doc.text('Relatório de Presenças', 14, 20);
+            
+            // Data do relatório
+            doc.setFontSize(10);
+            doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')}`, 14, 28);
+
+            // Estatísticas
+            const totalPresencas = state.dados.reduce((sum, d) => sum + d.total_presencas, 0);
+            const mediaPresencas = state.dados.length > 0 ? (totalPresencas / state.dados.length).toFixed(1) : 0;
+            
+            doc.setFontSize(12);
+            doc.text(`Total de Jogadores: ${state.dados.length}`, 14, 38);
+            doc.text(`Total de Presenças: ${totalPresencas}`, 14, 45);
+            doc.text(`Média por Jogador: ${mediaPresencas}`, 14, 52);
+
+            // Tabela
+            const tableData = state.dados.map((jogador, idx) => [
+                idx + 1,
+                jogador.nome,
+                jogador.total_presencas,
+                jogador.primeira_presenca,
+                jogador.ultima_presenca
+            ]);
+
+            doc.autoTable({
+                startY: 60,
+                head: [['#', 'Jogador', 'Presenças', 'Primeira', 'Última']],
+                body: tableData,
+                theme: 'grid',
+                headStyles: { fillColor: [59, 130, 246] },
+                styles: { fontSize: 9 }
+            });
+
+            // Salvar
+            doc.save(`relatorio-presencas-${new Date().toISOString().split('T')[0]}.pdf`);
+        }
+
+        // Função para exportar para Excel
+        function exportarExcel() {
+            const totalPresencas = state.dados.reduce((sum, d) => sum + d.total_presencas, 0);
+            const mediaPresencas = state.dados.length > 0 ? (totalPresencas / state.dados.length).toFixed(1) : 0;
+
+            // Dados do resumo
+            const resumo = [
+                ['RELATÓRIO DE PRESENÇAS'],
+                [],
+                ['Gerado em:', new Date().toLocaleDateString('pt-BR') + ' às ' + new Date().toLocaleTimeString('pt-BR')],
+                [],
+                ['ESTATÍSTICAS'],
+                ['Total de Jogadores:', state.dados.length],
+                ['Total de Presenças:', totalPresencas],
+                ['Média por Jogador:', mediaPresencas],
+                [],
+                ['RANKING DE JOGADORES'],
+                ['#', 'Jogador', 'Presenças', 'Primeira Presença', 'Última Presença']
+            ];
+
+            // Dados dos jogadores
+            const jogadoresData = state.dados.map((jogador, idx) => [
+                idx + 1,
+                jogador.nome,
+                jogador.total_presencas,
+                jogador.primeira_presenca,
+                jogador.ultima_presenca
+            ]);
+
+            // Combinar tudo
+            const wsData = [...resumo, ...jogadoresData];
+
+            // Criar workbook e worksheet
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+            // Ajustar largura das colunas
+            ws['!cols'] = [
+                { wch: 5 },
+                { wch: 25 },
+                { wch: 12 },
+                { wch: 18 },
+                { wch: 18 }
+            ];
+
+            // Adicionar worksheet ao workbook
+            XLSX.utils.book_append_sheet(wb, ws, 'Presenças');
+
+            // Salvar arquivo
+            XLSX.writeFile(wb, `relatorio-presencas-${new Date().toISOString().split('T')[0]}.xlsx`);
+        }
+
+        // Cores para os gráficos
+
         // Função para buscar dados do Supabase
         async function buscarDados() {
             state.loading = true;
@@ -232,12 +330,13 @@
                                     onclick="buscarDados()"
                                     ${state.loading ? 'disabled' : ''}
                                     class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-slate-600 disabled:to-slate-700 text-white font-semibold py-4 px-6 rounded-lg transition-all disabled:cursor-not-allowed shadow-lg text-lg"
+                                    style="background: linear-gradient(to right, #2563eb, #1d4ed8); color: white; font-weight: 600; padding: 1rem 1.5rem; border-radius: 0.5rem; border: none; cursor: pointer; font-size: 1.125rem;"
                                 >
                                     ${state.loading ? '🔄 Carregando...' : '🚀 Carregar Relatório'}
                                 </button>
 
-                                <div class="mt-6 p-4 bg-slate-700/50 rounded-lg">
-                                    <p class="text-xs text-slate-400 text-center">
+                                <div class="mt-6 p-4 bg-slate-700/50 rounded-lg" style="margin-top: 1.5rem; padding: 1rem; background: rgba(51, 65, 85, 0.5); border-radius: 0.5rem;">
+                                    <p class="text-xs text-slate-400 text-center" style="font-size: 0.75rem; color: #94a3b8; text-align: center;">
                                         Clique no botão acima para visualizar o relatório de presenças
                                     </p>
                                 </div>
@@ -257,17 +356,40 @@
                 <div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8">
                     <div class="max-w-7xl mx-auto">
                         <!-- Header -->
-                        <div class="flex justify-between items-center mb-8">
+                        <div class="flex justify-between items-center mb-8" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                             <div>
-                                <h1 class="text-4xl font-bold text-white mb-2">⚽ Relatório de Presenças</h1>
-                                <p class="text-slate-400">Acompanhe a participação de cada jogador</p>
+                                <h1 class="text-4xl font-bold text-white mb-2" style="font-size: 2.25rem; font-weight: bold; color: white; margin-bottom: 0.5rem;">⚽ Relatório de Presenças</h1>
+                                <p class="text-slate-400" style="color: #94a3b8;">Acompanhe a participação de cada jogador</p>
                             </div>
-                            <button
-                                onclick="location.reload()"
-                                class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
-                            >
-                                🔄 Atualizar
-                            </button>
+                            <div class="flex gap-3" style="display: flex; gap: 0.75rem;">
+                                <button
+                                    onclick="exportarPDF()"
+                                    class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors font-medium flex items-center gap-2"
+                                    style="padding: 0.5rem 1rem; background: #dc2626; color: white; border-radius: 0.5rem; border: none; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;"
+                                    onmouseover="this.style.background='#b91c1c'"
+                                    onmouseout="this.style.background='#dc2626'"
+                                >
+                                    📄 Exportar PDF
+                                </button>
+                                <button
+                                    onclick="exportarExcel()"
+                                    class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors font-medium flex items-center gap-2"
+                                    style="padding: 0.5rem 1rem; background: #16a34a; color: white; border-radius: 0.5rem; border: none; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;"
+                                    onmouseover="this.style.background='#15803d'"
+                                    onmouseout="this.style.background='#16a34a'"
+                                >
+                                    📊 Exportar Excel
+                                </button>
+                                <button
+                                    onclick="location.reload()"
+                                    class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+                                    style="padding: 0.5rem 1rem; background: #334155; color: white; border-radius: 0.5rem; border: none; cursor: pointer;"
+                                    onmouseover="this.style.background='#475569'"
+                                    onmouseout="this.style.background='#334155'"
+                                >
+                                    🔄 Atualizar
+                                </button>
+                            </div>
                         </div>
 
                         <!-- Cards de Estatísticas -->
